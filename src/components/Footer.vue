@@ -59,12 +59,12 @@ const { footer } = useContent()
           <h3 class="text-xl font-bold mb-4">Opening Hours</h3>
           <ul class="space-y-2">
             <li class="flex justify-between">
-              <span>Monday - Friday</span>
-              <span>{{ footer.hours.weekdays }}</span>
+              <span>Morning (Mon-Sat)</span>
+              <span>{{ footer.hours.morning }}</span>
             </li>
             <li class="flex justify-between">
-              <span>Saturday</span>
-              <span>{{ footer.hours.saturday }}</span>
+              <span>Evening (Mon-Sat)</span>
+              <span>{{ footer.hours.evening }}</span>
             </li>
             <li class="flex justify-between">
               <span>Sunday</span>
