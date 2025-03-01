@@ -30,7 +30,7 @@ const toggleMenu = () => {
             <router-link to="/" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.home') }}</router-link>
             <router-link to="/about" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.about') }}</router-link>
             <router-link to="/contact" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.contact') }}</router-link>
-            <a href="tel:+1234567890" class="btn btn-primary">{{ t('nav.bookAppointment') }}</a>
+            <a href="tel:+918299792775" class="btn btn-primary">{{ t('nav.bookAppointment') }}</a>
           </nav>
         </div>
         
@@ -53,7 +53,7 @@ const toggleMenu = () => {
           <router-link @click="isMenuOpen = false" to="/" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.home') }}</router-link>
           <router-link @click="isMenuOpen = false" to="/about" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.about') }}</router-link>
           <router-link @click="isMenuOpen = false" to="/contact" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.contact') }}</router-link>
-          <a href="tel:+919559760487" class="btn btn-primary inline-block text-center">{{ t('nav.bookAppointment') }}</a>
+          <a href="tel:+918299792775" class="btn btn-primary inline-block text-center">{{ t('nav.bookAppointment') }}</a>
         </div>
       </div>
     </div>
