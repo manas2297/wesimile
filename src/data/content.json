@@ -153,18 +153,18 @@
   },
   "testimonials": [
     {
-      "name": "Rajesh Kumar",
-      "quote": "I've been coming to WeSmile for years and have always had a positive experience. The staff is friendly and professional, and Dr. Neha is excellent at what she does.",
-      "rating": 5
-    },
-    {
       "name": "Manas",
       "quote": "The staff at WeSmile is amazing. They made me feel comfortable and explained everything in detail. I highly recommend them!",
-      "rating": 5
+      "rating": 4
     },
     {
       "name": "Ekta",
       "quote": "Dr. Neha is a very good dentist. She is very friendly and explains everything in detail. I highly recommend her.",
+      "rating": 5
+    },
+    {
+      "name": "Usha",
+      "quote": "Dr Neha is very knowledgeable and has a great sense of humour. She is very friendly and explains everything in detail. I highly recommend her.",
       "rating": 5
     }
   ]
