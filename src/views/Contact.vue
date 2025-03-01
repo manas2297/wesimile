@@ -112,7 +112,6 @@
               </div>
               <h3 class="text-lg font-semibold mb-2">Phone</h3>
               <p class="text-gray-600">{{ contact.phone.primary }}</p>
-              <p class="text-gray-600">{{ contact.phone.secondary }}</p>
             </div>
             
             <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">

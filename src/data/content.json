@@ -1,8 +1,7 @@
 {
   "contact": {
     "phone": {
-      "primary": "+91 9559760487",
-      "secondary": "+91 8299792775"
+      "primary": "+91 9559760487"
     },
     "social": {
       "email": "yneha891981@gmail.com",
@@ -86,35 +85,25 @@
   },
   "specialOffers": [
     {
-      "title": "New Patient Special",
+      "title": "New Patient Package",
       "price": "₹999",
       "features": [
         "Complete Oral Examination",
         "Digital X-rays",
-        "Professional Cleaning",
-        "Treatment Plan"
+        "UltraSonic Scaling",
+        "Oral Hygiene Instructions"
       ]
     },
     {
       "title": "Teeth Whitening",
-      "price": "₹4999",
+      "price": "₹5999",
       "features": [
-        "Professional Whitening",
-        "Take-Home Kit",
-        "Custom Fitted Trays",
-        "1 Year Touch-ups"
+        "Consultation and shade assessment",
+        "Professional-grade whitening treatment",
+        "Visible results in single session",
+        "Post-treatment care instructions"
       ],
       "popular": true
-    },
-    {
-      "title": "Family Package",
-      "price": "20% OFF",
-      "features": [
-        "Family of 4 or More",
-        "All Treatments",
-        "Preventive Care",
-        "Emergency Services"
-      ]
     }
   ],
   "team": [
@@ -141,14 +130,14 @@
       "address": "Ground Floor, B 32/112 P, Sushant Smriti, Behind Sankat Mochan Mandir, Near Ram Mishthan, Saket Nagar",
       "city": "Varanasi",
       "state": "India",
-      "pincode": "221002",
+      "pincode": "221005",
       "phone": "+91 9559760487",
       "email": "yneha891981@gmail.com"
     },
     "hours": {
-      "weekdays": "8:00 AM - 6:00 PM",
-      "saturday": "9:00 AM - 4:00 PM",
-      "sunday": "Closed"
+      "morning": "10:00 AM - 2:00 PM",
+      "evening": "4:30 PM - 8:30 PM",
+      "sunday": "On Appointment"
     }
   },
   "testimonials": [
