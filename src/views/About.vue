@@ -39,13 +39,13 @@ const getSocialIcon = (platform: string) => {
           <div>
             <h2 class="section-title">Our Story</h2>
             <p class="text-gray-600 mb-6">
-              Founded in 2005, WeSmile has been providing quality dental services to our community for over 20 years. What started as a small practice has grown into a modern dental clinic with state-of-the-art equipment and a team of experienced professionals.
+              Welcome to WeSmile Multi Speciality Dental Clinic, where we are dedicated to providing exceptional dental care with a personal touch. With over 7 years of experience, our skilled team of dental professionals, led by Dr. Neha, is committed to ensuring your oral health and comfort are our top priorities. 
             </p>
             <p class="text-gray-600 mb-6">
-              Our mission is to deliver exceptional dental care in a comfortable and welcoming environment. We believe that everyone deserves a healthy, beautiful smile, and we're committed to making that a reality for all our patients.
+              Dr. Neha is also certified in endodontics and has successfully performed over 100 root canal procedures, specializing in the most advanced techniques to preserve your natural teeth. 
             </p>
             <p class="text-gray-600">
-              At WeSmile, we combine advanced technology with personalized care to ensure that each patient receives the best possible treatment tailored to their unique needs.
+              We offer a wide range of services, from routine check-ups and cleanings to advanced cosmetic and restorative procedures, all using the latest technology. Our clinic is designed to create a welcoming and relaxed environment, making your visit as comfortable as possible. At WeSmile Multi Speciality Dental Clinic, we believe in building lasting relationships with our patients and delivering the highest quality care tailored to your unique needs. Your smile is our passion, and we look forward to helping you maintain a healthy, beautiful one for years to come!
             </p>
           </div>
           <div>
@@ -94,7 +94,7 @@ const getSocialIcon = (platform: string) => {
                     <div class="text-sm">Years Experience</div>
                   </div>
                   <div class="text-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                    <div class="font-bold">500+</div>
+                    <div class="font-bold">100+</div>
                     <div class="text-sm">Happy Patients</div>
                   </div>
                 </div>
