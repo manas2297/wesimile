@@ -1,7 +1,6 @@
 import { useLanguage } from '../stores/useLanguage'
 
 type Language = 'en' | 'hi'
-type TranslationKey = keyof typeof translations.en
 
 export const translations = {
   en: {
