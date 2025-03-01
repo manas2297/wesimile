@@ -127,12 +127,12 @@
           </div>
           
           <div class="p-6 bg-gradient-to-br from-primary-light to-primary rounded-lg text-white transform hover:scale-105 transition-transform duration-300">
-            <div class="text-4xl font-bold mb-2">20+</div>
+            <div class="text-4xl font-bold mb-2">100+</div>
             <div class="text-sm">Happy Patients</div>
           </div>
           
           <div class="p-6 bg-gradient-to-br from-primary-light to-primary rounded-lg text-white transform hover:scale-105 transition-transform duration-300">
-            <div class="text-4xl font-bold mb-2">5+</div>
+            <div class="text-4xl font-bold mb-2">50+</div>
             <div class="text-sm">Successful Surgeries </div>
           </div>
           
