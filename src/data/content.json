@@ -1,0 +1,171 @@
+{
+  "contact": {
+    "phone": {
+      "primary": "+91 9559760487",
+      "secondary": "+91 8299792775"
+    },
+    "social": {
+      "email": "yneha891981@gmail.com",
+      "instagram": "wesmilemultispecialtydental_"
+    },
+    "location": {
+      "address": "Ground Floor, B 32/112 P, Sushant Smriti, Behind Sankat Mochan Mandir, Near Ram Mishthan, Saket Nagar",
+      "city": "Varanasi",
+      "state": "India",
+      "pincode": "221002"
+    },
+    "faqs": [
+      {
+        "question": "Do you accept insurance?",
+        "answer": "Yes, we accept most major dental insurance plans. Please contact our office to verify your specific coverage."
+      },
+      {
+        "question": "How often should I visit the dentist?",
+        "answer": "We recommend a check-up and cleaning every six months for most patients. However, some patients may need more frequent visits based on their oral health needs."
+      },
+      {
+        "question": "What should I do in a dental emergency?",
+        "answer": "Contact our office immediately. We reserve time in our schedule for emergency appointments and will provide guidance on how to manage your situation until you can be seen."
+      },
+      {
+        "question": "Do you offer payment plans?",
+        "answer": "Yes, we offer flexible payment options and financing plans to help make dental care affordable for all our patients."
+      }
+    ]
+  },
+  "services": {
+    "featured": [
+      {
+        "title": "Preventive Care",
+        "description": "Regular check-ups, cleanings, and preventive treatments to maintain your oral health.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Cosmetic Dentistry",
+        "description": "Enhance your smile with teeth whitening, veneers, and other cosmetic procedures.",
+        "icon": "smile"
+      },
+      {
+        "title": "Restorative Dentistry",
+        "description": "Repair damaged teeth with fillings, crowns, bridges, and dental implants.",
+        "icon": "refresh"
+      }
+    ],
+    "all": [
+      {
+        "title": "Digital X-rays",
+        "description": "Get accurate and detailed images of your teeth and gums with our digital X-ray technology.",
+        "icon": "x-ray"
+      },
+      {
+        "title": "Orthodontic Treatment",
+        "description": "Straighten your teeth with braces. We offer traditional metal braces, ceramic braces, and Invisalign.",
+        "icon": "braces"
+      },
+      {
+        "title": "Endodontics",
+        "description": "Treat root canals and other dental issues with our endodontic services.",
+        "icon": "tooth"
+      },
+      {
+        "title": "Oral Surgery",
+        "description": "Perform extractions, wisdom teeth removal and gum surgeries.",
+        "icon": "scalpel"
+      },
+      {
+        "title": "Pediatric Dentistry",
+        "description": "Treat children with special needs and provide comprehensive dental care.",
+        "icon": "child"
+      },
+      {
+        "title": "Implants",
+        "description": "Replace missing teeth with dental implants.",
+        "icon": "implant"
+      }
+    ]
+  },
+  "specialOffers": [
+    {
+      "title": "New Patient Special",
+      "price": "₹999",
+      "features": [
+        "Complete Oral Examination",
+        "Digital X-rays",
+        "Professional Cleaning",
+        "Treatment Plan"
+      ]
+    },
+    {
+      "title": "Teeth Whitening",
+      "price": "₹4999",
+      "features": [
+        "Professional Whitening",
+        "Take-Home Kit",
+        "Custom Fitted Trays",
+        "1 Year Touch-ups"
+      ],
+      "popular": true
+    },
+    {
+      "title": "Family Package",
+      "price": "20% OFF",
+      "features": [
+        "Family of 4 or More",
+        "All Treatments",
+        "Preventive Care",
+        "Emergency Services"
+      ]
+    }
+  ],
+  "team": [
+    {
+      "name": "Dr. Neha",
+      "role": "Lead Dentist",
+      "description": "Dr. Neha has over 7 years of experience in general and cosmetic dentistry. She is passionate about helping patients achieve their dream smiles.",
+      "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2",
+      "social": {
+        "facebook": "#",
+        "instagram": "https://www.instagram.com/wesmilemultispecialtydental_",
+        "twitter": "#"
+      }
+    }
+  ],
+  "footer": {
+    "description": "Providing quality dental care with a gentle touch. Your smile is our priority.",
+    "social": {
+      "facebook": "#",
+      "instagram": "https://www.instagram.com/wesmilemultispecialtydental_",
+      "twitter": "#"
+    },
+    "contact": {
+      "address": "Ground Floor, B 32/112 P, Sushant Smriti, Behind Sankat Mochan Mandir, Near Ram Mishthan, Saket Nagar",
+      "city": "Varanasi",
+      "state": "India",
+      "pincode": "221002",
+      "phone": "+91 9559760487",
+      "email": "yneha891981@gmail.com"
+    },
+    "hours": {
+      "weekdays": "8:00 AM - 6:00 PM",
+      "saturday": "9:00 AM - 4:00 PM",
+      "sunday": "Closed"
+    }
+  },
+  "testimonials": [
+    {
+      "name": "Rajesh Kumar",
+      "quote": "I've been coming to WeSmile for years and have always had a positive experience. The staff is friendly and professional, and Dr. Neha is excellent at what she does.",
+      "rating": 5
+    },
+    {
+      "name": "Manas",
+      "quote": "The staff at WeSmile is amazing. They made me feel comfortable and explained everything in detail. I highly recommend them!",
+      "rating": 5
+    },
+    {
+      "name": "Ekta",
+      "quote": "Dr. Neha is a very good dentist. She is very friendly and explains everything in detail. I highly recommend her.",
+      "rating": 5
+    }
+  ]
+} 
