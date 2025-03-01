@@ -11,13 +11,13 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <!-- Text Content -->
           <div class="animate-fade-in-left space-y-6">
-            <div class="inline-block bg-white/10 backdrop-blur-sm px-6 py-2 rounded-full text-base md:text-lg font-medium mb-4">
-              <span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-300 to-blue-300 animate-gradient font-bold">
-                Welcome to WeSmile Multi Speciality Dental Clinic
+            <div class="inline-block bg-white/15 backdrop-blur-md px-8 py-3 rounded-full text-base md:text-lg font-medium mb-6 shadow-lg hover:shadow-xl transition-all duration-500 border border-white/20">
+              <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient font-bold text-xl md:text-2xl lg:text-3xl tracking-wide">
+                {{ t('hero.welcome') }}
               </span>
             </div>
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              You Smile, We Too
+              {{ t('hero.title') }}
               <!-- <span class="relative">
                 Passion
                 <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 358 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,7 +26,7 @@
               </span> -->
             </h1>
             <p class="text-xl md:text-2xl text-gray-100">
-              Experience exceptional dental care with our team of experts. We're committed to giving you the healthy, beautiful smile you deserve.
+              {{ t('hero.subtitle') }}
             </p>
             
             <!-- CTA Buttons -->
@@ -35,7 +35,7 @@
                 to="/contact" 
                 class="btn bg-white text-primary hover:bg-gray-100 transform hover:-translate-y-1 transition-all duration-300 text-center group"
               >
-                Book Appointment
+                {{ t('hero.cta') }}
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 inline-block transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
@@ -44,7 +44,7 @@
                 to="/about" 
                 class="btn border-2 border-white text-white hover:bg-white hover:text-primary transform hover:-translate-y-1 transition-all duration-300 text-center"
               >
-                Learn More
+                {{ t('hero.learnMore') }}
               </router-link>
             </div>
 
@@ -106,7 +106,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <div>
+          <div>
                   <p class="text-gray-800 font-semibold">Affordable Care</p>
                   <p class="text-gray-500 text-sm">Best Quality Plans</p>
                 </div>
@@ -296,7 +296,7 @@
         </div>
         
         <TestimonialSlider :testimonials="testimonials" />
-      </div>
+              </div>
     </section>
     
     <!-- Our Latest Technology -->
@@ -305,7 +305,7 @@
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Latest Technology</h2>
           <p class="text-gray-600">Experience modern dentistry with our state-of-the-art equipment</p>
-        </div>
+            </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
@@ -354,10 +354,12 @@
 
 <script setup lang="ts">
 import { useHome } from '../composables/useHome'
+import { useTranslations } from '../locales/translations'
 import TestimonialSlider from '../components/TestimonialSlider.vue'
 import CTASection from '../components/CTASection.vue'
 
 const { featuredServices, testimonials, specialOffers } = useHome()
+const { t } = useTranslations()
 </script>
 
 <style>
@@ -440,6 +442,8 @@ const { featuredServices, testimonials, specialOffers } = useHome()
 
 .animate-gradient {
   background-size: 200% auto;
-  animation: gradient 3s linear infinite;
+  animation: gradient 4s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 </style>

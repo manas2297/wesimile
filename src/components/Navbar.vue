@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import LanguageSwitcher from './LanguageSwitcher.vue'
+import { useTranslations } from '../locales/translations'
 
 const isMenuOpen = ref(false)
+const { t } = useTranslations()
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
@@ -18,13 +21,18 @@ const toggleMenu = () => {
           </router-link>
         </div>
         
-        <!-- Desktop Navigation -->
-        <nav class="hidden md:flex space-x-8">
-          <router-link to="/" class="text-gray-700 hover:text-primary font-medium">Home</router-link>
-          <router-link to="/about" class="text-gray-700 hover:text-primary font-medium">About</router-link>
-          <router-link to="/contact" class="text-gray-700 hover:text-primary font-medium">Contact</router-link>
-          <a href="tel:+1234567890" class="btn btn-primary">Book Appointment</a>
-        </nav>
+        <!-- Language Switcher & Navigation -->
+        <div class="flex items-center space-x-6">
+          <LanguageSwitcher />
+          
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex space-x-8">
+            <router-link to="/" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.home') }}</router-link>
+            <router-link to="/about" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.about') }}</router-link>
+            <router-link to="/contact" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.contact') }}</router-link>
+            <a href="tel:+1234567890" class="btn btn-primary">{{ t('nav.bookAppointment') }}</a>
+          </nav>
+        </div>
         
         <!-- Mobile menu button -->
         <button 
@@ -42,10 +50,10 @@ const toggleMenu = () => {
       <!-- Mobile Navigation -->
       <div v-if="isMenuOpen" class="md:hidden mt-4 pb-4">
         <div class="flex flex-col space-y-4">
-          <router-link @click="isMenuOpen = false" to="/" class="text-gray-700 hover:text-primary font-medium">Home</router-link>
-          <router-link @click="isMenuOpen = false" to="/about" class="text-gray-700 hover:text-primary font-medium">About</router-link>
-          <router-link @click="isMenuOpen = false" to="/contact" class="text-gray-700 hover:text-primary font-medium">Contact</router-link>
-          <a href="tel:+919559760487" class="btn btn-primary inline-block text-center">Book Appointment</a>
+          <router-link @click="isMenuOpen = false" to="/" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.home') }}</router-link>
+          <router-link @click="isMenuOpen = false" to="/about" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.about') }}</router-link>
+          <router-link @click="isMenuOpen = false" to="/contact" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.contact') }}</router-link>
+          <a href="tel:+919559760487" class="btn btn-primary inline-block text-center">{{ t('nav.bookAppointment') }}</a>
         </div>
       </div>
     </div>
