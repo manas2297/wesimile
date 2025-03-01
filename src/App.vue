@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
+import ChatWidget from './components/ChatWidget.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import Footer from './components/Footer.vue'
     <main class="flex-grow">
       <router-view />
     </main>
+    <ChatWidget />
     <Footer />
   </div>
 </template>

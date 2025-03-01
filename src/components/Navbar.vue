@@ -43,7 +43,7 @@ const toggleMenu = () => {
       <div v-if="isMenuOpen" class="md:hidden mt-4 pb-4">
         <div class="flex flex-col space-y-4">
           <router-link @click="isMenuOpen = false" to="/" class="text-gray-700 hover:text-primary font-medium">Home</router-link>
-          <!-- <router-link @click="isMenuOpen = false" to="/about" class="text-gray-700 hover:text-primary font-medium">About</router-link> -->
+          <router-link @click="isMenuOpen = false" to="/about" class="text-gray-700 hover:text-primary font-medium">About</router-link>
           <router-link @click="isMenuOpen = false" to="/contact" class="text-gray-700 hover:text-primary font-medium">Contact</router-link>
           <a href="tel:+919559760487" class="btn btn-primary inline-block text-center">Book Appointment</a>
         </div>

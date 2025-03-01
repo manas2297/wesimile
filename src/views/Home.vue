@@ -361,19 +361,17 @@
       </div>
     </section>
     
-    <!-- CTA Section -->
-    <section class="bg-primary-dark text-white py-16">
-      <div class="container-custom text-center animate-fade-in-up">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Schedule Your Visit?</h2>
-        <p class="text-lg mb-8 max-w-3xl mx-auto">Contact us today to schedule an appointment. We look forward to helping you achieve a healthy, beautiful smile.</p>
-        <router-link to="/contact" class="btn bg-white text-primary-dark hover:bg-gray-100">Book Your Appointment</router-link>
-      </div>
-    </section>
+    <!-- Replace the CTA section with the new component -->
+    <CTASection 
+      title="Transform Your Smile Today" 
+      description="Experience the difference of modern dentistry with our expert care and state-of-the-art technology."
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useHome } from '../composables/useHome'
+import CTASection from '../components/CTASection.vue'
 
 const { featuredServices, testimonials, specialOffers } = useHome()
 </script>
