@@ -15,10 +15,6 @@
     },
     "faqs": [
       {
-        "question": "Do you accept insurance?",
-        "answer": "Yes, we accept most major dental insurance plans. Please contact our office to verify your specific coverage."
-      },
-      {
         "question": "How often should I visit the dentist?",
         "answer": "We recommend a check-up and cleaning every six months for most patients. However, some patients may need more frequent visits based on their oral health needs."
       },
@@ -27,8 +23,12 @@
         "answer": "Contact our office immediately. We reserve time in our schedule for emergency appointments and will provide guidance on how to manage your situation until you can be seen."
       },
       {
-        "question": "Do you offer payment plans?",
-        "answer": "Yes, we offer flexible payment options and financing plans to help make dental care affordable for all our patients."
+        "question": "Which toothpaste should I use?",
+        "answer": "We recommend using a toothpaste that is specifically designed for your age group. For children, we recommend using a toothpaste with fluoride. For adults, we recommend using a toothpaste that is specifically designed for your age group."
+      },
+      {
+        "question": "What is the best way to brush my teeth?",
+        "answer": "We recommend brushing your teeth twice a day for two minutes each time. Use a soft-bristled toothbrush and fluoride toothpaste."
       }
     ]
   },

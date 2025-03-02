@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function hasValidTimestamp() {
+      return request.resource.data.timestamp == request.time;
+    }
+
+    function hasValidMetadata() {
+      return request.resource.data.userAgent is string &&
+             request.resource.data.ipAddress is string;
+    }
+    
+    match /contactSubmissions/{document} {
+      allow create: if
+        // Basic validations
+        request.resource.data.name is string &&
+        request.resource.data.email is string &&
+        request.resource.data.phone is string &&
+        request.resource.data.message is string &&
+        
+        // Length checks
+        request.resource.data.name.size() <= 100 &&
+        request.resource.data.email.size() <= 100 &&
+        request.resource.data.phone.size() <= 15 &&
+        request.resource.data.message.size() <= 1000 &&
+        
+        // Format validations
+        request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') &&
+        request.resource.data.phone.matches('^(\\+91|0)?[6-9]\\d{9}$') &&
+        
+        // Metadata validations
+        hasValidTimestamp() &&
+        hasValidMetadata();
+
+      allow read: if false; // Prevent public reading
+    }
+  }
+}
