@@ -133,7 +133,7 @@ export function useContactForm() {
       }
 
       // Submit to Firestore
-      const docRef = await addDoc(collection(db, 'contactSubmissions'), {
+      await addDoc(collection(db, 'contactSubmissions'), {
         ...sanitizedData,
         timestamp: serverTimestamp(),
         userAgent: navigator.userAgent,
