@@ -13,38 +13,50 @@
                 class="space-y-6"
                 data-netlify="true"
                 name="contact"
-                method="POST">
+                method="POST"
+                id="contact-form"
+                autocomplete="on">
                 <input type="hidden" name="form-name" value="contact" />
+                <div v-if="submitSuccess" class="p-4 bg-green-50 text-green-700 rounded-lg mb-6">
+                  Thank you for your message! We'll get back to you soon.
+                </div>
+                <div v-if="submitError" class="p-4 bg-red-50 text-red-700 rounded-lg mb-6">
+                  {{ submitError }}
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div class="relative">
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                     <input 
                       name="name"
                       type="text" 
-                      id="name" 
+                      id="contact-name" 
                       v-model="name" 
                       required
+                      autocomplete="name"
                       class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition-all duration-300"
                       placeholder="John Doe"
+                      :disabled="isSubmitting"
                     >
                   </div>
                   
                   <div class="relative">
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                     <input 
                       name="email"
                       type="email" 
-                      id="email" 
+                      id="contact-email" 
                       v-model="email" 
                       required
+                      autocomplete="email"
                       class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition-all duration-300"
                       placeholder="john@example.com"
+                      :disabled="isSubmitting"
                     >
                   </div>
                 </div>
                 
                 <div class="relative">
-                  <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                  <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                   <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -54,24 +66,28 @@
                     <input 
                       name="phone"
                       type="tel" 
-                      id="phone" 
+                      id="contact-phone" 
                       v-model="phone"
+                      autocomplete="tel"
                       class="mt-1 block w-full pl-10 rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition-all duration-300"
                       placeholder="+91 98765 43210"
+                      :disabled="isSubmitting"
                     >
                   </div>
                 </div>
                 
                 <div class="relative">
-                  <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
+                  <label for="contact-message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
                   <textarea 
                     name="message"
-                    id="message" 
+                    id="contact-message" 
                     v-model="message" 
                     rows="4" 
                     required
+                    autocomplete="off"
                     class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition-all duration-300"
                     placeholder="Tell us how we can help you..."
+                    :disabled="isSubmitting"
                   ></textarea>
                 </div>
                 
@@ -79,20 +95,25 @@
                   <div class="flex items-center">
                     <input 
                       type="checkbox" 
-                      id="privacy" 
+                      id="privacy-policy" 
+                      name="privacy"
                       required
                       class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      :disabled="isSubmitting"
                     >
-                    <label for="privacy" class="ml-2 block text-sm text-gray-700">
+                    <label for="privacy-policy" class="ml-2 block text-sm text-gray-700">
                       I agree to the privacy policy
                     </label>
                   </div>
                   
                   <button 
                     type="submit" 
+                    id="submit-button"
                     class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+                    :disabled="isSubmitting"
                   >
-                    <span>Send Message</span>
+                    <span v-if="isSubmitting">Sending...</span>
+                    <span v-else>Send Message</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
@@ -163,28 +184,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useContent } from '../composables/useContent'
+import { useContactForm } from '../composables/useContactForm'
 
 const { contact } = useContent()
-const name = ref('')
-const email = ref('')
-const phone = ref('')
-const message = ref('')
-
-const handleSubmit = () => {
-  // Handle form submission here
-  console.log({
-    name: name.value,
-    email: email.value,
-    phone: phone.value,
-    message: message.value
-  })
-  
-  // Reset form
-  name.value = ''
-  email.value = ''
-  phone.value = ''
-  message.value = ''
-}
+const {
+  name,
+  email,
+  phone,
+  message,
+  isSubmitting,
+  submitError,
+  submitSuccess,
+  handleSubmit
+} = useContactForm()
 </script>
