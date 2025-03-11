@@ -2,6 +2,7 @@
 import { useAbout } from '../composables/useAbout'
 import CTASection from '../components/CTASection.vue'
 import BouncingBall from '../components/BouncingBall.vue'
+import doctorImage from '../assets/img.jpeg'
 
 const { allServices, team } = useAbout()
 
@@ -81,8 +82,8 @@ const getSocialIcon = (platform: string) => {
               <!-- Image Section -->
               <div class="relative overflow-hidden animate-on-scroll fade-left">
                 <img 
-                  :src="team[0].image" 
-                  :alt="team[0].name" 
+                  :src="doctorImage"
+                  :alt="team[0].name"
                   class="w-full h-full object-cover object-center transform hover:scale-110 transition-transform duration-700"
                   style="min-height: 400px;"
                 >
