@@ -111,7 +111,7 @@
       "name": "Dr. Neha",
       "role": "Lead Dentist",
       "description": "Dr. Neha has over 7 years of experience in general and cosmetic dentistry. She is passionate about helping patients achieve their dream smiles.",
-      "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2",
+      "image": "/src/assets/img.jpeg",
       "social": {
         "facebook": "#",
         "instagram": "https://www.instagram.com/wesmilemultispecialtydental_",
