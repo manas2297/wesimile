@@ -42,10 +42,10 @@ const getSocialIcon = (platform: string) => {
               Welcome to WeSmile Multi Speciality Dental Clinic, where we are dedicated to providing exceptional dental care with a personal touch. With over 7 years of experience, our skilled team of dental professionals, led by Dr. Neha, is committed to ensuring your oral health and comfort are our top priorities. 
             </p>
             <p class="text-gray-600 mb-6">
-              Dr. Neha is also certified in endodontics and has successfully performed over 100 root canal procedures, specializing in the most advanced techniques to preserve your natural teeth. 
+              Dr. Neha is also certified in endodontics and oral surgery procedures. She had worked for 5 years at Delhi dental academy in New Delhi as an associate dentist and mentor for the students guiding various dental procedure to them. Now she is practicing since 2023 in varanasi as a dentist.
             </p>
             <p class="text-gray-600">
-              We offer a wide range of services, from routine check-ups and cleanings to advanced cosmetic and restorative procedures, all using the latest technology. Our clinic is designed to create a welcoming and relaxed environment, making your visit as comfortable as possible. At WeSmile Multi Speciality Dental Clinic, we believe in building lasting relationships with our patients and delivering the highest quality care tailored to your unique needs. Your smile is our passion, and we look forward to helping you maintain a healthy, beautiful one for years to come!
+              She had performed over 100 root canal procedures, 50+ surgeries, specialising in the most advanced techniques to preserve your natural teeth
             </p>
           </div>
           <div>
