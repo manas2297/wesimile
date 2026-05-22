@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-primary-light to-primary-dark text-white overflow-hidden">
+    <section class="relative bg-gradient-to-br from-primary to-primary-dark text-white overflow-hidden">
       <!-- Animated background pattern -->
       <div class="absolute inset-0 opacity-10">
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
@@ -11,21 +11,15 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <!-- Text Content -->
           <div class="animate-fade-in-left space-y-6">
-            <div class="inline-block bg-white/15 backdrop-blur-md px-8 py-3 rounded-full text-base md:text-lg font-medium mb-6 shadow-lg hover:shadow-xl transition-all duration-500 border border-white/20">
-              <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient font-bold text-xl md:text-2xl lg:text-3xl tracking-wide">
+            <div class="inline-block bg-secondary-light px-4 py-1.5 rounded-md text-sm font-semibold mb-6 border border-secondary/20 text-secondary">
+              <span class="uppercase tracking-wider font-bold">
                 {{ t('hero.welcome') }}
               </span>
             </div>
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               {{ t('hero.title') }}
-              <!-- <span class="relative">
-                Passion
-                <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 358 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 5.8c54-4 98.5-4.3 137.3-1.2 35.9 2.9 71.8 2.9 107.7 0 38.8-3.1 83.3-2.8 137.3 1.2" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
-                </svg>
-              </span> -->
             </h1>
-            <p class="text-xl md:text-2xl text-gray-100">
+            <p class="text-xl md:text-2xl text-slate-200">
               {{ t('hero.subtitle') }}
             </p>
             
@@ -33,7 +27,7 @@
             <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
               <router-link 
                 to="/contact" 
-                class="btn bg-white text-primary hover:bg-gray-100 transform hover:-translate-y-1 transition-all duration-300 text-center group"
+                class="btn bg-secondary text-white hover:bg-secondary-dark transform hover:-translate-y-0.5 transition-all duration-300 text-center group"
               >
                 {{ t('hero.cta') }}
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 inline-block transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
@@ -42,7 +36,7 @@
               </router-link>
               <router-link 
                 to="/about" 
-                class="btn border-2 border-white text-white hover:bg-white hover:text-primary transform hover:-translate-y-1 transition-all duration-300 text-center"
+                class="btn border border-white/50 text-white hover:bg-white/10 transform hover:-translate-y-0.5 transition-all duration-300 text-center"
               >
                 {{ t('hero.learnMore') }}
               </router-link>
@@ -51,28 +45,28 @@
             <!-- Trust Indicators -->
             <div class="flex flex-wrap gap-6 pt-8">
               <div class="flex items-center space-x-2">
-                <div class="bg-white/20 rounded-full p-2">
+                <div class="bg-white/10 rounded-md p-2 text-secondary">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <span class="text-sm">Expert Dentist</span>
+                <span class="text-sm text-slate-100 font-medium">Expert Dentist</span>
               </div>
               <div class="flex items-center space-x-2">
-                <div class="bg-white/20 rounded-full p-2">
+                <div class="bg-white/10 rounded-md p-2 text-secondary">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <span class="text-sm">Affordable Care</span>
+                <span class="text-sm text-slate-100 font-medium">Affordable Care</span>
               </div>
               <div class="flex items-center space-x-2">
-                <div class="bg-white/20 rounded-full p-2">
+                <div class="bg-white/10 rounded-md p-2 text-secondary">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
                 </div>
-                <span class="text-sm">7+ Years Experience</span>
+                <span class="text-sm text-slate-100 font-medium">7+ Years Experience</span>
               </div>
             </div>
           </div>
@@ -86,29 +80,29 @@
               class="rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500 object-cover w-full h-[600px]"
             >
             <!-- Floating Achievement Cards -->
-            <div class="absolute -left-8 top-1/4 bg-white p-4 rounded-lg shadow-xl transform hover:-translate-y-1 transition-transform duration-300">
+            <div class="absolute -left-8 top-1/4 bg-white p-4 rounded-md border border-slate-100 shadow-md transform hover:-translate-y-1 transition-transform duration-300">
               <div class="flex items-center space-x-3">
-                <div class="bg-primary/10 rounded-full p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="bg-secondary-light rounded-md p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
-                  <p class="text-gray-800 font-semibold">Expert Dentist</p>
-                  <p class="text-gray-500 text-sm">Highly Qualified</p>
+                  <p class="text-slate-800 font-semibold">Expert Dentist</p>
+                  <p class="text-slate-500 text-sm">Highly Qualified</p>
                 </div>
               </div>
             </div>
-            <div class="absolute -right-8 bottom-1/4 bg-white p-4 rounded-lg shadow-xl transform hover:-translate-y-1 transition-transform duration-300">
+            <div class="absolute -right-8 bottom-1/4 bg-white p-4 rounded-md border border-slate-100 shadow-md transform hover:-translate-y-1 transition-transform duration-300">
               <div class="flex items-center space-x-3">
-                <div class="bg-primary/10 rounded-full p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="bg-secondary-light rounded-md p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-          <div>
-                  <p class="text-gray-800 font-semibold">Affordable Care</p>
-                  <p class="text-gray-500 text-sm">Best Quality Plans</p>
+                <div>
+                  <p class="text-slate-800 font-semibold">Affordable Care</p>
+                  <p class="text-slate-500 text-sm">Best Quality Plans</p>
                 </div>
               </div>
             </div>
@@ -118,47 +112,47 @@
     </section>
     
     <!-- Stats/Highlights -->
-    <section class="py-12 bg-white">
+    <section class="py-12 bg-slate-50 border-y border-slate-200">
       <div class="container-custom">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-          <div class="p-6 bg-gradient-to-br from-primary-light to-primary rounded-lg text-white transform hover:scale-105 transition-transform duration-300">
-            <div class="text-4xl font-bold mb-2">7+</div>
-            <div class="text-sm">Years of Experience</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div class="p-6 bg-white border border-slate-200 rounded-md shadow-sm transform hover:-translate-y-0.5 transition-all duration-300">
+            <div class="text-4xl font-extrabold text-primary mb-2">7+</div>
+            <div class="text-sm font-semibold text-slate-700">Years of Experience</div>
           </div>
           
-          <div class="p-6 bg-gradient-to-br from-primary-light to-primary rounded-lg text-white transform hover:scale-105 transition-transform duration-300">
-            <div class="text-4xl font-bold mb-2">100+</div>
-            <div class="text-sm">Happy Patients</div>
+          <div class="p-6 bg-white border border-slate-200 rounded-md shadow-sm transform hover:-translate-y-0.5 transition-all duration-300">
+            <div class="text-4xl font-extrabold text-primary mb-2">100+</div>
+            <div class="text-sm font-semibold text-slate-700">Happy Patients</div>
           </div>
           
-          <div class="p-6 bg-gradient-to-br from-primary-light to-primary rounded-lg text-white transform hover:scale-105 transition-transform duration-300">
-            <div class="text-4xl font-bold mb-2">50+</div>
-            <div class="text-sm">Successful Surgeries </div>
+          <div class="p-6 bg-white border border-slate-200 rounded-md shadow-sm transform hover:-translate-y-0.5 transition-all duration-300">
+            <div class="text-4xl font-extrabold text-primary mb-2">50+</div>
+            <div class="text-sm font-semibold text-slate-700">Successful Surgeries</div>
           </div>
           
-          <div class="p-6 bg-gradient-to-br from-primary-light to-primary rounded-lg text-white transform hover:scale-105 transition-transform duration-300">
-            <div class="text-4xl font-bold mb-2">100%</div>
-            <div class="text-sm">Patient Satisfaction</div>
+          <div class="p-6 bg-white border border-slate-200 rounded-md shadow-sm transform hover:-translate-y-0.5 transition-all duration-300">
+            <div class="text-4xl font-extrabold text-primary mb-2">100%</div>
+            <div class="text-sm font-semibold text-slate-700">Patient Satisfaction</div>
           </div>
         </div>
       </div>
     </section>
     
     <!-- Services Section -->
-    <section class="section bg-gray-50">
+    <section class="section bg-slate-50">
       <div class="container-custom">
         <div class="text-center mb-12 animate-fade-in-up">
-          <h2 class="section-title">Our Services</h2>
-          <p class="text-gray-600 max-w-3xl mx-auto">We offer a comprehensive range of dental services to meet all your oral health needs.</p>
+          <h2 class="section-title text-primary">Our Featured Services</h2>
+          <p class="text-slate-600 max-w-3xl mx-auto">We offer a comprehensive range of dental services to meet all your oral health needs with professional care.</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div v-for="(service, index) in featuredServices" 
                :key="index"
-               class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow transform hover:scale-105 transition-transform duration-300 animate-fade-in-up"
+               class="bg-white p-6 rounded-md border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 animate-fade-in-up"
                :style="{ animationDelay: `${index * 200}ms` }">
-            <div class="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="w-16 h-16 bg-secondary-light rounded-md flex items-center justify-center mb-4 mx-auto text-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path v-if="service.title === 'Preventive Care'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 
                 <path v-if="service.title === 'Cosmetic Dentistry'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -179,49 +173,56 @@
                 <path v-if="service.title === 'Implants'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold text-center mb-2">{{ service.title }}</h3>
-            <p class="text-gray-600 text-center">{{ service.description }}</p>
+            <h3 class="text-xl font-bold text-slate-800 text-center mb-2">{{ service.title }}</h3>
+            <p class="text-slate-600 text-center text-sm leading-relaxed">{{ service.description }}</p>
           </div>
         </div>
         
         <div class="text-center mt-10">
-          <router-link to="/about" class="btn btn-primary">View All Services</router-link>
+          <router-link to="/about" class="btn btn-primary shadow-sm hover:shadow-md transition-shadow">View All Services</router-link>
         </div>
       </div>
     </section>
     
     <!-- Special Offers -->
-    <section class="py-16 bg-gray-900 text-white">
+    <section class="py-16 bg-white">
       <div class="container-custom">
         <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Special Offers</h2>
-          <p class="text-gray-300">Take advantage of our current promotions</p>
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-primary">Special Offers</h2>
+          <p class="text-slate-600">Take advantage of our clinical care promotions</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div v-for="(offer, index) in specialOffers" 
                :key="index"
                :class="[
-                 'p-6 rounded-lg border transform hover:scale-105 transition-all duration-300 relative',
+                 'p-8 rounded-md border transition-all duration-300 relative flex flex-col justify-between shadow-sm hover:shadow-md transform hover:-translate-y-0.5',
                  offer.popular 
-                   ? 'bg-gradient-to-br from-primary to-primary-dark border-primary-light text-white' 
-                   : 'bg-white/10 backdrop-blur-lg border-white/20 text-white'
+                   ? 'bg-primary border-primary text-white shadow-md' 
+                   : 'bg-slate-50 border-slate-200 text-slate-800'
                ]">
-            <div v-if="offer.popular" 
-                 class="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
-              Popular
+            <div>
+              <div v-if="offer.popular" 
+                   class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider">
+                Popular
+              </div>
+              <div class="text-2xl font-bold mb-2" 
+                   :class="offer.popular ? 'text-white' : 'text-primary'">
+                {{ offer.title }}
+              </div>
+              <div class="text-4xl font-extrabold mb-4" :class="offer.popular ? 'text-white' : 'text-slate-900'">{{ offer.price }}</div>
+              <ul class="space-y-3 mb-8" :class="offer.popular ? 'text-slate-100' : 'text-slate-600'">
+                <li v-for="feature in offer.features" :key="feature" class="flex items-center text-sm font-medium">
+                  <svg class="h-5 w-5 mr-2 shrink-0" :class="offer.popular ? 'text-secondary-light' : 'text-secondary'" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  {{ feature }}
+                </li>
+              </ul>
             </div>
-            <div class="text-2xl font-bold mb-2" 
-                 :class="offer.popular ? 'text-white' : 'text-primary-light'">
-              {{ offer.title }}
-            </div>
-            <div class="text-4xl font-bold mb-4">{{ offer.price }}</div>
-            <ul class="space-y-2 mb-6" :class="offer.popular ? 'text-white' : 'text-gray-300'">
-              <li v-for="feature in offer.features" :key="feature">✓ {{ feature }}</li>
-            </ul>
             <router-link to="/contact" 
-                         class="btn w-full"
-                         :class="offer.popular ? 'bg-white text-primary hover:bg-gray-100' : 'bg-primary-light text-white hover:bg-primary'">
+                         class="btn w-full text-center py-3 font-semibold rounded-md shadow-sm transition-all duration-300 text-sm"
+                         :class="offer.popular ? 'bg-secondary text-white hover:bg-secondary-dark' : 'bg-primary text-white hover:bg-primary-dark'">
               Book Now
             </router-link>
           </div>

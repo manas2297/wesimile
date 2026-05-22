@@ -8,14 +8,14 @@ export default {
     extend: {
       colors: {
         primary: {
-          light: '#4fd1c5',
-          DEFAULT: '#38b2ac',
-          dark: '#319795',
+          light: '#f0f7ff', // Soft Ice Blue background
+          DEFAULT: '#0f2d59', // Deep Navy Blue
+          dark: '#0a1e3b',
         },
         secondary: {
-          light: '#9f7aea',
-          DEFAULT: '#805ad5',
-          dark: '#6b46c1',
+          light: '#e6fffa', // Soft Mint/Teal background
+          DEFAULT: '#0d9488', // Medical Teal
+          dark: '#0f766e',
         }
       },
     },

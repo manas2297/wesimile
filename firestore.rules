@@ -32,7 +32,13 @@ service cloud.firestore {
         hasValidTimestamp() &&
         hasValidMetadata();
 
-      allow read: if false; // Prevent public reading
+      // Only authenticated admin users can read and delete
+      allow read, delete: if request.auth != null;
+    }
+    
+    // Rate limiting collection
+    match /rateLimits/{document=**} {
+      allow read, write: if true;
     }
   }
 }

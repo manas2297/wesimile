@@ -133,6 +133,10 @@ export function useContactForm() {
       }
 
       // Submit to Firestore
+      if (!db) {
+        throw new Error('Database is not initialized. Please configure your .env file.')
+      }
+
       await addDoc(collection(db, 'contactSubmissions'), {
         ...sanitizedData,
         timestamp: serverTimestamp(),

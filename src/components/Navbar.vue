@@ -26,11 +26,11 @@ const toggleMenu = () => {
           <LanguageSwitcher />
           
           <!-- Desktop Navigation -->
-          <nav class="hidden md:flex space-x-8">
-            <router-link to="/" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.home') }}</router-link>
-            <router-link to="/about" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.about') }}</router-link>
-            <router-link to="/contact" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.contact') }}</router-link>
-            <a href="tel:+918299792775" class="btn btn-primary">{{ t('nav.bookAppointment') }}</a>
+          <nav class="hidden md:flex space-x-8 items-center">
+            <router-link to="/" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.home') }}</router-link>
+            <router-link to="/about" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.about') }}</router-link>
+            <router-link to="/contact" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.contact') }}</router-link>
+            <a href="tel:+918299792775" class="btn btn-primary shadow-sm hover:shadow-md transition-shadow">{{ t('nav.bookAppointment') }}</a>
           </nav>
         </div>
         
