@@ -20,7 +20,7 @@ const getSocialIcon = (platform: string) => {
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary to-primary-dark text-white py-16 relative overflow-hidden">
+    <section class="bg-gradient-to-br from-primary to-primary-dark text-white pt-28 pb-16 md:pt-36 md:pb-20 relative overflow-hidden">
       <div class="container-custom relative z-10">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">About WeSmile</h1>
         <p class="text-lg max-w-3xl">Learn more about our clinic, our team, and our commitment to providing exceptional dental care.</p>
