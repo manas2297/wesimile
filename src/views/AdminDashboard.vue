@@ -12,7 +12,7 @@
             </div>
             <div>
               <h1 class="text-xl font-bold text-slate-800">Admin Dashboard</h1>
-              <p class="text-sm text-slate-500">Contact Submissions</p>
+              <p class="text-sm text-slate-500">WeSmile Portal Management</p>
             </div>
           </div>
           
@@ -25,7 +25,7 @@
             </div>
             <button
               @click="handleLogout"
-              class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors font-semibold text-sm shadow-sm hover:shadow"
+              class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors font-semibold text-sm shadow-sm hover:shadow cursor-pointer"
             >
               Logout
             </button>
@@ -36,6 +36,44 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      
+      <!-- Tabs Selector -->
+      <div class="border-b border-slate-200 mb-6 flex space-x-8">
+        <button
+          @click="changeTab('contacts')"
+          :class="[
+            activeTab === 'contacts'
+              ? 'border-primary text-primary font-bold'
+              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 font-medium',
+            'pb-4 border-b-2 text-sm transition-all px-1 cursor-pointer'
+          ]"
+        >
+          Patient Contacts
+        </button>
+        <button
+          @click="changeTab('partnerships')"
+          :class="[
+            activeTab === 'partnerships'
+              ? 'border-primary text-primary font-bold'
+              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 font-medium',
+            'pb-4 border-b-2 text-sm transition-all px-1 cursor-pointer'
+          ]"
+        >
+          B2B Partnerships
+        </button>
+        <button
+          @click="changeTab('students')"
+          :class="[
+            activeTab === 'students'
+              ? 'border-primary text-primary font-bold'
+              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 font-medium',
+            'pb-4 border-b-2 text-sm transition-all px-1 cursor-pointer'
+          ]"
+        >
+          Student Applications
+        </button>
+      </div>
+
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-md shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
@@ -44,8 +82,8 @@
               <p class="text-sm font-semibold text-slate-600">Total Submissions</p>
               <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ submissions.length }}</p>
             </div>
-            <div class="w-12 h-12 bg-secondary-light rounded-md flex items-center justify-center">
-              <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-teal-50 rounded-md flex items-center justify-center">
+              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
               </svg>
             </div>
@@ -58,8 +96,8 @@
               <p class="text-sm font-semibold text-slate-600">Filtered Results</p>
               <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ filteredSubmissions.length }}</p>
             </div>
-            <div class="w-12 h-12 bg-secondary-light rounded-md flex items-center justify-center">
-              <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-teal-50 rounded-md flex items-center justify-center">
+              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
               </svg>
             </div>
@@ -74,8 +112,8 @@
                 {{ latestSubmissionTime }}
               </p>
             </div>
-            <div class="w-12 h-12 bg-secondary-light rounded-md flex items-center justify-center">
-              <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-teal-50 rounded-md flex items-center justify-center">
+              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -95,9 +133,9 @@
                 </svg>
               </div>
               <input
-                v-model="searchQuery"
+                v-model="activeSearchQuery"
                 type="text"
-                placeholder="Search by name, email, phone, or message..."
+                placeholder="Search..."
                 class="block w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent transition-all text-slate-800 text-sm"
               />
             </div>
@@ -106,17 +144,19 @@
           <!-- Sort Controls -->
           <div class="flex items-center space-x-3">
             <select
-              v-model="sortBy"
+              v-model="activeSortBy"
               class="px-4 py-2.5 border border-slate-300 rounded-md focus:ring-2 focus:ring-secondary focus:border-transparent bg-white text-slate-700 text-sm font-medium"
             >
               <option value="date">Sort by Date</option>
-              <option value="name">Sort by Name</option>
-              <option value="email">Sort by Email</option>
+              <option v-if="activeTab === 'contacts' || activeTab === 'students'" value="name">Sort by Name</option>
+              <option v-if="activeTab === 'partnerships'" value="company">Sort by Company</option>
+              <option v-if="activeTab === 'partnerships'" value="contact">Sort by Contact Person</option>
+              <option v-if="activeTab === 'students'" value="school">Sort by School</option>
             </select>
 
             <button
               @click="toggleSortOrder"
-              class="p-2.5 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors"
+              class="p-2.5 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors cursor-pointer"
               :title="sortOrder === 'asc' ? 'Ascending' : 'Descending'"
             >
               <svg v-if="sortOrder === 'desc'" class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +169,7 @@
 
             <button
               @click="exportToCSV"
-              class="px-4 py-2.5 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold flex items-center space-x-2 shadow-sm hover:shadow text-sm"
+              class="px-4 py-2.5 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold flex items-center space-x-2 shadow-sm hover:shadow text-sm cursor-pointer"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -140,7 +180,7 @@
             <button
               @click="fetchSubmissions"
               :disabled="loading"
-              class="p-2.5 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors disabled:opacity-50"
+              class="p-2.5 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors disabled:opacity-50 cursor-pointer"
               title="Refresh"
             >
               <svg class="w-5 h-5" :class="{ 'animate-spin': loading }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,7 +193,7 @@
 
       <!-- Loading State -->
       <div v-if="loading && submissions.length === 0" class="bg-white rounded-md shadow-sm border border-slate-200 p-12 text-center">
-        <svg class="animate-spin h-12 w-12 text-secondary mx-auto mb-4" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin h-12 w-12 text-teal-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
@@ -169,69 +209,187 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else-if="filteredSubmissions.length === 0" class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-        <svg class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div v-else-if="filteredSubmissions.length === 0" class="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
+        <svg class="h-16 w-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
         </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No submissions found</h3>
-        <p class="text-gray-600">
-          {{ searchQuery ? 'Try adjusting your search criteria' : 'Contact submissions will appear here' }}
+        <h3 class="text-lg font-medium text-slate-900 mb-2">No submissions found</h3>
+        <p class="text-slate-600">
+          {{ activeSearchQuery ? 'Try adjusting your search criteria' : 'Submissions will appear here' }}
         </p>
       </div>
 
-      <!-- Submissions Table -->
-      <div v-else class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <!-- Tab 1: Contacts Table -->
+      <div v-else-if="activeTab === 'contacts'" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date & Time</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Message</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">IP Address</th>
+                <th class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="submission in filteredSubmissions" :key="submission.id" class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            <tbody class="bg-white divide-y divide-slate-200">
+              <tr v-for="submission in filteredSubmissions" :key="submission.id" class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
                   <div class="flex flex-col">
                     <span class="font-medium">{{ formatDate(submission.timestamp) }}</span>
-                    <span class="text-gray-500 text-xs">{{ formatTime(submission.timestamp) }}</span>
+                    <span class="text-slate-500 text-xs">{{ formatTime(submission.timestamp) }}</span>
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900">{{ submission.name }}</div>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
+                  {{ (submission as any).name }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ submission.email }}</div>
-                  <div class="text-sm text-gray-500">{{ submission.phone }}</div>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  <div>{{ submission.email }}</div>
+                  <div class="text-slate-500 text-xs font-medium">{{ submission.phone }}</div>
                 </td>
-                <td class="px-6 py-4 max-w-md">
-                  <div class="text-sm text-gray-900 line-clamp-2" :title="submission.message">
+                <td class="px-6 py-4 max-w-xs">
+                  <div class="text-sm text-slate-900 line-clamp-2" :title="submission.message">
                     {{ submission.message }}
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                   {{ submission.ipAddress || 'N/A' }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button
-                    @click="viewDetails(submission)"
-                    class="text-primary hover:text-primary-dark mr-3"
-                    title="View Details"
-                  >
+                  <button @click="viewDetails(submission)" class="text-primary hover:text-primary-dark mr-3 cursor-pointer">
+                    <svg class="w-5 h-5 animate-pulse-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <button @click="confirmDelete(submission)" class="text-red-600 hover:text-red-900 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Partnerships Table -->
+      <div v-else-if="activeTab === 'partnerships'" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date & Time</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Company</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact Person</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact Info</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Partnership Focus</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Proposal Message</th>
+                <th class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-slate-200">
+              <tr v-for="submission in filteredSubmissions" :key="submission.id" class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  <div class="flex flex-col">
+                    <span class="font-medium">{{ formatDate(submission.timestamp) }}</span>
+                    <span class="text-slate-500 text-xs">{{ formatTime(submission.timestamp) }}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
+                  {{ (submission as any).companyName }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  {{ (submission as any).contactName }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  <div>{{ submission.email }}</div>
+                  <div class="text-slate-500 text-xs font-medium">{{ submission.phone }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <span class="px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded text-xs font-bold">
+                    {{ formatPartnershipFocus((submission as any).partnershipType) }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 max-w-xs">
+                  <div class="text-sm text-slate-900 line-clamp-2" :title="submission.message">
+                    {{ submission.message }}
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button @click="viewDetails(submission)" class="text-primary hover:text-primary-dark mr-3 cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                   </button>
-                  <button
-                    @click="confirmDelete(submission)"
-                    class="text-red-600 hover:text-red-900"
-                    title="Delete"
-                  >
+                  <button @click="confirmDelete(submission)" class="text-red-600 hover:text-red-900 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Students Table -->
+      <div v-else-if="activeTab === 'students'" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date & Time</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Student Name</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact Info</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Dental School / University</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Study Year / Specialty</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Resume / Link</th>
+                <th class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-slate-200">
+              <tr v-for="submission in filteredSubmissions" :key="submission.id" class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  <div class="flex flex-col">
+                    <span class="font-medium">{{ formatDate(submission.timestamp) }}</span>
+                    <span class="text-slate-500 text-xs">{{ formatTime(submission.timestamp) }}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
+                  {{ (submission as any).fullName }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  <div>{{ submission.email }}</div>
+                  <div class="text-slate-500 text-xs font-medium">{{ submission.phone }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
+                  {{ (submission as any).school }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <div class="font-medium text-slate-900">{{ formatYearOfStudy((submission as any).yearOfStudy) }}</div>
+                  <div class="text-xs text-teal-600 font-semibold mt-0.5">{{ formatSpecialtyInterest((submission as any).specialtyInterest) }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  <a :href="(submission as any).resumeUrl" target="_blank" class="text-primary hover:underline font-bold text-xs inline-flex items-center space-x-1">
+                    <span>View CV</span>
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button @click="viewDetails(submission)" class="text-primary hover:text-primary-dark mr-3 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <button @click="confirmDelete(submission)" class="text-red-600 hover:text-red-900 cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
@@ -245,11 +403,11 @@
     </main>
 
     <!-- Detail Modal -->
-    <div v-if="selectedSubmission" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" @click.self="selectedSubmission = null">
+    <div v-if="selectedSubmission" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fade-in" @click.self="selectedSubmission = null">
       <div class="bg-white rounded-md shadow-lg border border-slate-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div class="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
           <h3 class="text-xl font-bold text-slate-800">Submission Details</h3>
-          <button @click="selectedSubmission = null" class="text-slate-400 hover:text-slate-600">
+          <button @click="selectedSubmission = null" class="text-slate-400 hover:text-slate-600 cursor-pointer">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -262,15 +420,70 @@
             <p class="text-slate-800 mt-1">{{ formatDate(selectedSubmission.timestamp) }} at {{ formatTime(selectedSubmission.timestamp) }}</p>
           </div>
           
-          <div>
+          <!-- Tab 1 Details -->
+          <div v-if="activeTab === 'contacts'">
             <label class="text-sm font-semibold text-slate-500">Name</label>
-            <p class="text-slate-800 mt-1">{{ selectedSubmission.name }}</p>
+            <p class="text-slate-800 mt-1 font-semibold">{{ selectedSubmission.name }}</p>
           </div>
           
+          <!-- Tab 2 Details -->
+          <div v-if="activeTab === 'partnerships'">
+            <div class="mb-3">
+              <label class="text-sm font-semibold text-slate-500">Company Name</label>
+              <p class="text-slate-850 mt-1 font-bold text-base text-primary">{{ (selectedSubmission as any).companyName }}</p>
+            </div>
+            <div>
+              <label class="text-sm font-semibold text-slate-500">Contact Person</label>
+              <p class="text-slate-800 mt-1">{{ (selectedSubmission as any).contactName }}</p>
+            </div>
+            <div class="mt-3">
+              <label class="text-sm font-semibold text-slate-500">Partnership Focus</label>
+              <p class="mt-1">
+                <span class="px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded text-xs font-bold">
+                  {{ formatPartnershipFocus((selectedSubmission as any).partnershipType) }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Tab 3 Details -->
+          <div v-if="activeTab === 'students'">
+            <div class="mb-3">
+              <label class="text-sm font-semibold text-slate-500">Student Name</label>
+              <p class="text-slate-850 mt-1 font-bold text-base text-primary">{{ (selectedSubmission as any).fullName }}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-sm font-semibold text-slate-500">Dental School / College</label>
+                <p class="text-slate-800 mt-1">{{ (selectedSubmission as any).school }}</p>
+              </div>
+              <div>
+                <label class="text-sm font-semibold text-slate-500">Year of Study</label>
+                <p class="text-slate-800 mt-1">{{ formatYearOfStudy((selectedSubmission as any).yearOfStudy) }}</p>
+              </div>
+            </div>
+            <div class="mt-3">
+              <label class="text-sm font-semibold text-slate-500">Specialty Interest Focus</label>
+              <p class="text-teal-700 mt-1 font-bold text-sm">{{ formatSpecialtyInterest((selectedSubmission as any).specialtyInterest) }}</p>
+            </div>
+            <div class="mt-3">
+              <label class="text-sm font-semibold text-slate-500">Resume / CV Link</label>
+              <p class="mt-1">
+                <a :href="(selectedSubmission as any).resumeUrl" target="_blank" class="text-primary hover:underline font-bold text-sm inline-flex items-center space-x-1">
+                  <span>Open CV File</span>
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Common Fields -->
           <div>
             <label class="text-sm font-semibold text-slate-500">Email</label>
             <p class="text-slate-800 mt-1">
-              <a :href="`mailto:${selectedSubmission.email}`" class="text-primary hover:underline">
+              <a :href="`mailto:${selectedSubmission.email}`" class="text-primary hover:underline font-medium">
                 {{ selectedSubmission.email }}
               </a>
             </p>
@@ -279,25 +492,28 @@
           <div>
             <label class="text-sm font-semibold text-slate-500">Phone</label>
             <p class="text-slate-800 mt-1">
-              <a :href="`tel:${selectedSubmission.phone}`" class="text-primary hover:underline">
+              <a :href="`tel:${selectedSubmission.phone}`" class="text-primary hover:underline font-medium">
                 {{ selectedSubmission.phone }}
               </a>
             </p>
           </div>
           
           <div>
-            <label class="text-sm font-semibold text-slate-500">Message</label>
-            <p class="text-slate-800 mt-1 whitespace-pre-wrap">{{ selectedSubmission.message }}</p>
+            <label class="text-sm font-semibold text-slate-500">
+              {{ activeTab === 'contacts' ? 'Message' : (activeTab === 'partnerships' ? 'Partnership Proposal Description' : 'Clinical SOP / Statement of Purpose') }}
+            </label>
+            <p class="text-slate-800 mt-1 whitespace-pre-wrap leading-relaxed text-sm bg-slate-50 p-4 rounded border border-slate-200">{{ selectedSubmission.message }}</p>
           </div>
           
-          <div>
-            <label class="text-sm font-semibold text-slate-500">IP Address</label>
-            <p class="text-slate-800 mt-1">{{ selectedSubmission.ipAddress || 'N/A' }}</p>
+          <div class="grid grid-cols-2 gap-4 pt-2 border-t border-slate-100 text-xs text-slate-400">
+            <div>
+              <span class="font-semibold">IP Address:</span> {{ selectedSubmission.ipAddress || 'N/A' }}
+            </div>
           </div>
           
-          <div v-if="selectedSubmission.userAgent">
-            <label class="text-sm font-semibold text-slate-500">User Agent</label>
-            <p class="text-slate-800 mt-1 text-sm break-all">{{ selectedSubmission.userAgent }}</p>
+          <div v-if="selectedSubmission.userAgent" class="pt-2 text-xs text-slate-400">
+            <span class="font-semibold text-block mb-1">User Agent:</span>
+            <p class="break-all font-mono">{{ selectedSubmission.userAgent }}</p>
           </div>
         </div>
       </div>
@@ -314,19 +530,19 @@
         
         <h3 class="text-xl font-bold text-slate-800 text-center mb-2">Delete Submission?</h3>
         <p class="text-slate-600 text-center mb-6">
-          Are you sure you want to delete the submission from <strong>{{ deleteConfirmation.name }}</strong>? This action cannot be undone.
+          Are you sure you want to delete the submission from <strong>{{ deleteConfirmationName }}</strong>? This action cannot be undone.
         </p>
         
         <div class="flex space-x-3">
           <button
             @click="deleteConfirmation = null"
-            class="flex-1 px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors font-semibold"
+            class="flex-1 px-4 py-2 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors font-semibold cursor-pointer"
           >
             Cancel
           </button>
           <button
             @click="handleDelete"
-            class="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors font-semibold"
+            class="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors font-semibold cursor-pointer"
           >
             Delete
           </button>
@@ -340,29 +556,101 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
-import { useContactSubmissions, type ContactSubmission } from '../composables/useContactSubmissions'
+import { useContactSubmissions } from '../composables/useContactSubmissions'
+import { usePartnershipSubmissions } from '../composables/usePartnershipSubmissions'
+import { useStudentApplications } from '../composables/useStudentApplications'
 import type { Timestamp } from 'firebase/firestore'
 
 const router = useRouter()
 const { user, logout } = useAuth()
-const {
-  submissions,
-  loading,
-  error,
-  searchQuery,
-  sortBy,
-  sortOrder,
-  filteredSubmissions,
-  fetchSubmissions,
-  deleteSubmission,
-  exportToCSV
-} = useContactSubmissions()
 
-const selectedSubmission = ref<ContactSubmission | null>(null)
-const deleteConfirmation = ref<ContactSubmission | null>(null)
+const activeTab = ref<'contacts' | 'partnerships' | 'students'>('contacts')
+
+// Load the three separate stores
+const contactStore = useContactSubmissions()
+const partnershipStore = usePartnershipSubmissions()
+const studentStore = useStudentApplications()
+
+// Computed getter pointing to the currently active store
+const activeStore = computed(() => {
+  if (activeTab.value === 'partnerships') return partnershipStore
+  if (activeTab.value === 'students') return studentStore
+  return contactStore
+})
+
+// Mapped reactive properties from the active store
+const submissions = computed(() => activeStore.value.submissions.value)
+const loading = computed(() => activeStore.value.loading.value)
+const error = computed(() => activeStore.value.error.value)
+const filteredSubmissions = computed(() => activeStore.value.filteredSubmissions.value)
+const sortOrder = computed(() => activeStore.value.sortOrder.value)
+
+// Writable computed properties for v-model bindings
+const activeSearchQuery = computed({
+  get: () => activeStore.value.searchQuery.value,
+  set: (val) => { activeStore.value.searchQuery.value = val }
+})
+
+const activeSortBy = computed({
+  get: () => activeStore.value.sortBy.value,
+  set: (val) => { activeStore.value.sortBy.value = val }
+})
+
+// Tab switching
+const changeTab = (tab: 'contacts' | 'partnerships' | 'students') => {
+  activeTab.value = tab
+  activeStore.value.fetchSubmissions()
+}
 
 onMounted(() => {
-  fetchSubmissions()
+  contactStore.fetchSubmissions()
+})
+
+// Proxy action triggers
+const fetchSubmissions = () => {
+  activeStore.value.fetchSubmissions()
+}
+
+const exportToCSV = () => {
+  activeStore.value.exportToCSV()
+}
+
+const toggleSortOrder = () => {
+  activeStore.value.sortOrder.value = activeStore.value.sortOrder.value === 'asc' ? 'desc' : 'asc'
+}
+
+// Modal handling states
+const selectedSubmission = ref<any | null>(null)
+const deleteConfirmation = ref<any | null>(null)
+
+const viewDetails = (submission: any) => {
+  selectedSubmission.value = submission
+}
+
+const confirmDelete = (submission: any) => {
+  deleteConfirmation.value = submission
+}
+
+const handleDelete = async () => {
+  if (!deleteConfirmation.value) return
+  const success = await activeStore.value.deleteSubmission(deleteConfirmation.value.id)
+  if (success) {
+    deleteConfirmation.value = null
+  }
+}
+
+const handleLogout = async () => {
+  await logout()
+  router.push('/admin/login')
+}
+
+// Helper formatting computed values & methods
+const deleteConfirmationName = computed(() => {
+  if (!deleteConfirmation.value) return ''
+  if (activeTab.value === 'contacts') return deleteConfirmation.value.name
+  if (activeTab.value === 'partnerships') return (deleteConfirmation.value as any).companyName
+  if (activeTab.value === 'students') return (deleteConfirmation.value as any).fullName
+  return ''
 })
 
 const latestSubmissionTime = computed(() => {
@@ -404,30 +692,37 @@ const formatRelativeTime = (timestamp: Timestamp) => {
   return formatDate(timestamp)
 }
 
-const toggleSortOrder = () => {
-  sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
-}
-
-const viewDetails = (submission: ContactSubmission) => {
-  selectedSubmission.value = submission
-}
-
-const confirmDelete = (submission: ContactSubmission) => {
-  deleteConfirmation.value = submission
-}
-
-const handleDelete = async () => {
-  if (!deleteConfirmation.value) return
-  
-  const success = await deleteSubmission(deleteConfirmation.value.id)
-  if (success) {
-    deleteConfirmation.value = null
+const formatPartnershipFocus = (focus: string) => {
+  const mapping: Record<string, string> = {
+    clinical_trials: 'Clinical Trials & AI',
+    distribution: 'Distribution & Retail',
+    co_branding: 'Co-Branding / Events',
+    other: 'Other'
   }
+  return mapping[focus] || focus
 }
 
-const handleLogout = async () => {
-  await logout()
-  router.push('/admin/login')
+const formatYearOfStudy = (year: string) => {
+  const mapping: Record<string, string> = {
+    '1st_year': '1st Year (BDS)',
+    '2nd_year': '2nd Year (BDS)',
+    '3rd_year': '3rd Year (BDS)',
+    '4th_year': '4th Year (BDS)',
+    residency: 'Resident / MDS',
+    other: 'Other Trainee'
+  }
+  return mapping[year] || year
+}
+
+const formatSpecialtyInterest = (specialty: string) => {
+  const mapping: Record<string, string> = {
+    general: 'General Dentistry',
+    orthodontics: 'Orthodontics',
+    implants: 'Implants & Restorative',
+    surgery: 'Oral Surgery',
+    pediatric: 'Pediatric Care'
+  }
+  return mapping[specialty] || specialty
 }
 </script>
 

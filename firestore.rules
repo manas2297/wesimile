@@ -35,6 +35,70 @@ service cloud.firestore {
       // Only authenticated admin users can read and delete
       allow read, delete: if request.auth != null;
     }
+
+    match /b2bPartnerships/{document} {
+      allow create: if
+        // Basic validations
+        request.resource.data.companyName is string &&
+        request.resource.data.contactName is string &&
+        request.resource.data.email is string &&
+        request.resource.data.phone is string &&
+        request.resource.data.partnershipType is string &&
+        request.resource.data.message is string &&
+        
+        // Length checks
+        request.resource.data.companyName.size() <= 100 &&
+        request.resource.data.contactName.size() <= 100 &&
+        request.resource.data.email.size() <= 100 &&
+        request.resource.data.phone.size() <= 15 &&
+        request.resource.data.partnershipType.size() <= 50 &&
+        request.resource.data.message.size() <= 1000 &&
+        
+        // Format validations
+        request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') &&
+        request.resource.data.phone.matches('^(\\+91|0)?[6-9]\\d{9}$') &&
+        
+        // Metadata validations
+        hasValidTimestamp() &&
+        hasValidMetadata();
+
+      // Only authenticated admin users can read and delete
+      allow read, delete: if request.auth != null;
+    }
+
+    match /studentApplications/{document} {
+      allow create: if
+        // Basic validations
+        request.resource.data.fullName is string &&
+        request.resource.data.email is string &&
+        request.resource.data.phone is string &&
+        request.resource.data.school is string &&
+        request.resource.data.yearOfStudy is string &&
+        request.resource.data.specialtyInterest is string &&
+        request.resource.data.resumeUrl is string &&
+        request.resource.data.message is string &&
+        
+        // Length checks
+        request.resource.data.fullName.size() <= 100 &&
+        request.resource.data.email.size() <= 100 &&
+        request.resource.data.phone.size() <= 15 &&
+        request.resource.data.school.size() <= 150 &&
+        request.resource.data.yearOfStudy.size() <= 50 &&
+        request.resource.data.specialtyInterest.size() <= 50 &&
+        request.resource.data.resumeUrl.size() <= 250 &&
+        request.resource.data.message.size() <= 1000 &&
+        
+        // Format validations
+        request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') &&
+        request.resource.data.phone.matches('^(\\+91|0)?[6-9]\\d{9}$') &&
+        
+        // Metadata validations
+        hasValidTimestamp() &&
+        hasValidMetadata();
+
+      // Only authenticated admin users can read and delete
+      allow read, delete: if request.auth != null;
+    }
     
     // Rate limiting collection
     match /rateLimits/{document=**} {

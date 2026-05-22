@@ -29,6 +29,8 @@ const toggleMenu = () => {
           <nav class="hidden md:flex space-x-8 items-center">
             <router-link to="/" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.home') }}</router-link>
             <router-link to="/about" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.about') }}</router-link>
+            <router-link to="/partnerships" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.partnerships') }}</router-link>
+            <router-link to="/students" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.students') }}</router-link>
             <router-link to="/contact" active-class="text-primary font-semibold" class="text-gray-600 hover:text-primary transition-colors duration-200 font-medium">{{ t('nav.contact') }}</router-link>
             <a href="tel:+918299792775" class="btn btn-primary shadow-sm hover:shadow-md transition-shadow">{{ t('nav.bookAppointment') }}</a>
           </nav>
@@ -52,6 +54,8 @@ const toggleMenu = () => {
         <div class="flex flex-col space-y-4">
           <router-link @click="isMenuOpen = false" to="/" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.home') }}</router-link>
           <router-link @click="isMenuOpen = false" to="/about" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.about') }}</router-link>
+          <router-link @click="isMenuOpen = false" to="/partnerships" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.partnerships') }}</router-link>
+          <router-link @click="isMenuOpen = false" to="/students" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.students') }}</router-link>
           <router-link @click="isMenuOpen = false" to="/contact" class="text-gray-700 hover:text-primary font-medium">{{ t('nav.contact') }}</router-link>
           <a href="tel:+918299792775" class="btn btn-primary inline-block text-center">{{ t('nav.bookAppointment') }}</a>
         </div>

@@ -9,6 +9,8 @@ export const translations = {
       about: 'About',
       services: 'Services',
       contact: 'Contact',
+      partnerships: 'Partnerships',
+      students: 'Academy',
       bookAppointment: 'Book Appointment'
     },
     hero: {
@@ -26,6 +28,8 @@ export const translations = {
       about: 'हमारे बारे में',
       services: 'सेवाएं',
       contact: 'संपर्क करें',
+      partnerships: 'साझेदारी',
+      students: 'अकादमी',
       bookAppointment: 'अपॉइंटमेंट बुक करें'
     },
     hero: {
