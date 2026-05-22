@@ -15,11 +15,11 @@ const toggleMenu = () => {
 }
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 20
+  isScrolled.value = window.scrollY > 40
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('scroll', handleScroll, { passive: true })
 })
 
 onUnmounted(() => {
@@ -42,16 +42,16 @@ const isLinkActive = (path: string) => {
 
 const headerClasses = computed(() => {
   if (isTransparent.value) {
-    return 'fixed top-0 left-0 right-0 z-50 bg-transparent border-transparent py-5 md:py-6 transition-all duration-300 ease-in-out'
+    return 'fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-none border-b border-transparent py-4 shadow-none transition-all duration-300 ease-in-out'
   } else {
-    return 'fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100 py-3.5 transition-all duration-300 ease-in-out'
+    return 'fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100/80 py-4 shadow-sm transition-all duration-300 ease-in-out'
   }
 })
 
 const logoClasses = computed(() => {
   return isTransparent.value 
-    ? 'text-2xl font-black text-white tracking-tight transition-colors duration-300' 
-    : 'text-2xl font-black text-primary tracking-tight transition-colors duration-300'
+    ? 'text-2xl font-black text-white tracking-tight transition-colors duration-300 ease-in-out' 
+    : 'text-2xl font-black text-primary tracking-tight transition-colors duration-300 ease-in-out'
 })
 
 const navItems = [
@@ -91,7 +91,7 @@ const navItems = [
                 isLinkActive(item.path) 
                   ? (isTransparent ? 'text-white font-bold border-b-2 border-white pb-1' : 'text-primary font-bold border-b-2 border-primary pb-1')
                   : 'border-b-2 border-transparent pb-1',
-                'transition-all duration-300 font-medium text-sm tracking-wide'
+                'transition-all duration-300 ease-in-out font-medium text-sm tracking-wide'
               ]"
             >
               {{ t(item.label) }}
@@ -103,8 +103,8 @@ const navItems = [
               :class="[
                 isTransparent
                   ? 'btn border border-white/80 text-white hover:bg-white hover:text-primary'
-                  : 'btn btn-primary shadow-sm hover:shadow-md',
-                'transition-all duration-300 font-bold text-sm px-5 py-2'
+                  : 'btn border border-primary bg-primary text-white hover:bg-primary-dark hover:border-primary-dark shadow-sm hover:shadow-md',
+                'transition-all duration-300 ease-in-out font-bold text-sm px-5 py-2'
               ]"
             >
               {{ t('nav.bookAppointment') }}
@@ -117,7 +117,7 @@ const navItems = [
           @click="toggleMenu" 
           :class="[
             isTransparent ? 'text-white' : 'text-slate-700',
-            'md:hidden focus:outline-none transition-colors duration-300 p-1.5 rounded-md hover:bg-slate-100/10'
+            'md:hidden focus:outline-none transition-colors duration-300 ease-in-out p-1.5 rounded-md hover:bg-slate-100/10'
           ]"
           aria-label="Toggle menu"
         >
