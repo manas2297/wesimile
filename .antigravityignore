@@ -1,0 +1,23 @@
+# .antigravityignore
+# Block heavy dependencies
+node_modules/
+vendor/
+.venv/
+venv/
+
+# Block build/binary outputs and caches
+dist/
+build/
+bin/
+out/
+.next/
+*.o
+*.exe
+
+# Block high-noise media assets or datasets
+*.mp4
+*.png
+*.jpg
+*.svg
+data/
+datasets/

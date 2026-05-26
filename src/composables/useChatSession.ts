@@ -10,7 +10,8 @@ import {
   serverTimestamp,
   Timestamp
 } from 'firebase/firestore'
-import { db } from '../config/firebase'
+import { signInAnonymously } from 'firebase/auth'
+import { auth, db } from '../config/firebase'
 
 export interface ChatMessage {
   id?: string
@@ -26,49 +27,61 @@ export function useChatSession() {
   const isTyping = ref(false)
   let unsubscribe: (() => void) | null = null
 
-  // 1. Get or generate persistent visitor ID
-  const initVisitorId = () => {
-    let id = localStorage.getItem('wesmile_visitor_id')
-    if (!id) {
-      id = 'visitor_' + Math.random().toString(36).substring(2, 11)
-      localStorage.setItem('wesmile_visitor_id', id)
-    }
-    visitorId.value = id
-  }
-
-  // 2. Subscribe to real-time chat messages
-  const startChatListener = () => {
-    if (!db) return
-    initVisitorId()
+  // 1. Subscribe to real-time chat messages
+  const startChatListener = async () => {
+    if (!db || !auth) return
 
     loading.value = true
-    const messagesRef = collection(db, 'chats', visitorId.value, 'messages')
-    const q = query(messagesRef, orderBy('timestamp', 'asc'))
+    try {
+      // Sign in anonymously if not already signed in
+      if (!auth.currentUser) {
+        await signInAnonymously(auth)
+      }
 
-    unsubscribe = onSnapshot(q, (snapshot) => {
-      messages.value = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      })) as ChatMessage[]
+      const uid = auth.currentUser?.uid
+      if (!uid) throw new Error('No user UID found after anonymous sign-in')
+
+      visitorId.value = uid
+
+      const messagesRef = collection(db, 'chats', uid, 'messages')
+      const q = query(messagesRef, orderBy('timestamp', 'asc'))
+
+      unsubscribe = onSnapshot(q, (snapshot) => {
+        messages.value = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        })) as ChatMessage[]
+        loading.value = false
+      }, (error) => {
+        console.error('Error listening to chat messages:', error)
+        loading.value = false
+      })
+    } catch (error) {
+      console.error('Failed to start anonymous chat connection:', error)
       loading.value = false
-    }, (error) => {
-      console.error('Error listening to chat messages:', error)
-      loading.value = false
-    })
+    }
   }
 
-  // 3. Send a message to Firestore
+  // 2. Send a message to Firestore
   const sendVisitorMessage = async (text: string) => {
-    if (!db || !text.trim()) return
-    initVisitorId()
-
-    const chatDocRef = doc(db, 'chats', visitorId.value)
-    const messagesCollectionRef = collection(db, 'chats', visitorId.value, 'messages')
+    if (!db || !auth || !text.trim()) return
 
     try {
+      if (!auth.currentUser) {
+        await signInAnonymously(auth)
+      }
+
+      const uid = auth.currentUser?.uid
+      if (!uid) throw new Error('No user UID found')
+
+      visitorId.value = uid
+
+      const chatDocRef = doc(db, 'chats', uid)
+      const messagesCollectionRef = collection(db, 'chats', uid, 'messages')
+
       // Update parent session details for the admin console list
       await setDoc(chatDocRef, {
-        visitorId: visitorId.value,
+        visitorId: uid,
         lastMessage: text,
         updatedAt: serverTimestamp()
       }, { merge: true })

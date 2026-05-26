@@ -31,6 +31,12 @@ service cloud.firestore {
              p.matches('^(\\+91|0)?[6-9][0-9]{9}$');
     }
 
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     // ── Contact Submissions ────────────────────────────────────────────────────
     match /contactSubmissions/{document} {
       allow create: if
@@ -163,10 +169,10 @@ service cloud.firestore {
 
     // ── Real-Time Chat ──────────────────────────────────────────────────────────
     match /chats/{visitorId} {
-      allow read, write: if true;
+      allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == visitorId);
 
       match /messages/{messageId} {
-        allow read, write: if true;
+        allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == visitorId);
       }
     }
   }
