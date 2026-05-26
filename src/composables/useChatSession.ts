@@ -27,21 +27,42 @@ export function useChatSession() {
   const isTyping = ref(false)
   let unsubscribe: (() => void) | null = null
 
+  // Helper to wait for initial auth state
+  const getCurrentUser = (): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      if (!auth) {
+        resolve(null)
+        return
+      }
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        unsubscribe()
+        resolve(user)
+      }, reject)
+    })
+  }
+
   // 1. Subscribe to real-time chat messages
   const startChatListener = async () => {
     if (!db || !auth) return
 
     loading.value = true
     try {
-      // Sign in anonymously if not already signed in
-      if (!auth.currentUser) {
-        await signInAnonymously(auth)
+      let user = auth.currentUser
+      if (!user) {
+        user = await getCurrentUser()
       }
 
-      const uid = auth.currentUser?.uid
+      // Sign in anonymously if no persistent user exists
+      if (!user) {
+        const credentials = await signInAnonymously(auth)
+        user = credentials.user
+      }
+
+      const uid = user?.uid
       if (!uid) throw new Error('No user UID found after anonymous sign-in')
 
       visitorId.value = uid
+      localStorage.setItem('wesmile_visitor_id', uid)
 
       const messagesRef = collection(db, 'chats', uid, 'messages')
       const q = query(messagesRef, orderBy('timestamp', 'asc'))
@@ -67,14 +88,21 @@ export function useChatSession() {
     if (!db || !auth || !text.trim()) return
 
     try {
-      if (!auth.currentUser) {
-        await signInAnonymously(auth)
+      let user = auth.currentUser
+      if (!user) {
+        user = await getCurrentUser()
       }
 
-      const uid = auth.currentUser?.uid
+      if (!user) {
+        const credentials = await signInAnonymously(auth)
+        user = credentials.user
+      }
+
+      const uid = user?.uid
       if (!uid) throw new Error('No user UID found')
 
       visitorId.value = uid
+      localStorage.setItem('wesmile_visitor_id', uid)
 
       const chatDocRef = doc(db, 'chats', uid)
       const messagesCollectionRef = collection(db, 'chats', uid, 'messages')
