@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useAbout } from '../composables/useAbout'
 import CTASection from '../components/CTASection.vue'
-import BouncingBall from '../components/BouncingBall.vue'
 import doctorImage from '../assets/img.jpeg'
 
 const { allServices, team } = useAbout()
@@ -21,12 +20,7 @@ const getSocialIcon = (platform: string) => {
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="bg-primary text-white py-16 relative overflow-hidden">
-      <!-- Add the bouncing balls -->
-      <BouncingBall />
-      <BouncingBall />
-      <BouncingBall />
-      
+    <section class="bg-gradient-to-br from-primary to-primary-dark text-white pt-28 pb-16 md:pt-36 md:pb-20 relative overflow-hidden">
       <div class="container-custom relative z-10">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">About WeSmile</h1>
         <p class="text-lg max-w-3xl">Learn more about our clinic, our team, and our commitment to providing exceptional dental care.</p>
@@ -57,7 +51,7 @@ const getSocialIcon = (platform: string) => {
     </section>
     
     <!-- Our Team Section -->
-    <section class="section bg-gradient-to-br from-gray-50 to-white overflow-hidden relative">
+    <section class="section bg-slate-50 overflow-hidden relative">
       <!-- Background Pattern -->
       <div class="absolute inset-0 opacity-5">
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23000000&quot; fill-opacity=&quot;0.4&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
@@ -65,38 +59,34 @@ const getSocialIcon = (platform: string) => {
 
       <div class="container-custom">
         <div class="text-center mb-16 animate-on-scroll fade-up">
-          <span class="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <span class="inline-block bg-secondary-light text-secondary px-4 py-1.5 rounded-md text-sm font-semibold mb-4 border border-secondary/20">
             Our Expert
           </span>
-          <h2 class="section-title">Meet Dr. Neha</h2>
-          <p class="text-gray-600 max-w-3xl mx-auto">Your trusted dental care provider, committed to delivering exceptional dental services with a gentle touch.</p>
+          <h2 class="section-title text-primary">Meet Dr. Neha</h2>
+          <p class="text-slate-600 max-w-3xl mx-auto">Your trusted dental care provider, committed to delivering exceptional dental services with a gentle touch.</p>
         </div>
         
         <div class="max-w-4xl mx-auto relative">
-          <!-- Decorative Elements -->
-          <div class="absolute -top-6 -left-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
-          <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
-
-          <div class="bg-white rounded-2xl overflow-hidden shadow-2xl relative z-10 animate-on-scroll fade-up">
+          <div class="bg-white rounded-md overflow-hidden border border-slate-200 shadow-lg relative z-10 animate-on-scroll fade-up">
             <div class="grid md:grid-cols-2 gap-0">
               <!-- Image Section -->
               <div class="relative overflow-hidden animate-on-scroll fade-left">
                 <img 
                   :src="doctorImage"
                   :alt="team[0].name"
-                  class="w-full h-full object-cover object-center transform hover:scale-110 transition-transform duration-700"
+                  class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   style="min-height: 400px;"
                 >
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 <!-- Floating Stats -->
-                <div class="absolute bottom-4 left-4 right-4 flex justify-between text-white">
-                  <div class="text-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                    <div class="font-bold">7+</div>
-                    <div class="text-sm">Years Experience</div>
+                <div class="absolute bottom-4 left-4 right-4 flex justify-between">
+                  <div class="text-center px-4 py-2 bg-white border border-slate-100 rounded-md shadow-md w-[45%]">
+                    <div class="font-extrabold text-primary text-xl">7+</div>
+                    <div class="text-xs font-semibold text-slate-600">Years Experience</div>
                   </div>
-                  <div class="text-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                    <div class="font-bold">100+</div>
-                    <div class="text-sm">Happy Patients</div>
+                  <div class="text-center px-4 py-2 bg-white border border-slate-100 rounded-md shadow-md w-[45%]">
+                    <div class="font-extrabold text-primary text-xl">100+</div>
+                    <div class="text-xs font-semibold text-slate-600">Happy Patients</div>
                   </div>
                 </div>
               </div>
@@ -118,7 +108,7 @@ const getSocialIcon = (platform: string) => {
                       <li v-for="spec in ['General Dentistry', 'Cosmetic Dentistry', 'Dental Implants', 'Orthodontics']" 
                           :key="spec"
                           class="flex items-center text-gray-600">
-                        <svg class="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                         {{ spec }}
@@ -149,8 +139,8 @@ const getSocialIcon = (platform: string) => {
     <section class="section">
       <div class="container-custom">
         <div class="text-center mb-12">
-          <h2 class="section-title">Our Services</h2>
-          <p class="text-gray-600 max-w-3xl mx-auto">We offer a comprehensive range of dental services to meet all your oral health needs.</p>
+          <h2 class="section-title text-primary">All Services</h2>
+          <p class="text-slate-600 max-w-3xl mx-auto">We offer a comprehensive range of dental services to meet all your oral health needs.</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -158,7 +148,7 @@ const getSocialIcon = (platform: string) => {
                :key="service.title"
                class="flex">
             <div class="flex-shrink-0">
-              <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
+              <div class="flex items-center justify-center h-12 w-12 rounded-md bg-secondary-light text-secondary border border-secondary/10">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <!-- Preventive Care -->
                   <path v-if="service.icon === 'shield-check'" 
@@ -198,8 +188,8 @@ const getSocialIcon = (platform: string) => {
               </div>
             </div>
             <div class="ml-4">
-              <h3 class="text-xl font-medium text-gray-900">{{ service.title }}</h3>
-              <p class="mt-2 text-gray-600">{{ service.description }}</p>
+              <h3 class="text-xl font-medium text-slate-800">{{ service.title }}</h3>
+              <p class="mt-2 text-slate-600 text-sm leading-relaxed">{{ service.description }}</p>
             </div>
           </div>
         </div>

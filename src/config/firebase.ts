@@ -1,4 +1,5 @@
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, Firestore } from 'firebase/firestore';
+import { getAuth, Auth } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
@@ -10,6 +11,27 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app); 
+let db: Firestore | null = null;
+let auth: Auth | null = null;
+
+// Only initialize Firebase if API key is present and doesn't look like a placeholder
+const hasValidApiKey = firebaseConfig.apiKey && 
+                       firebaseConfig.apiKey !== 'your-api-key' && 
+                       firebaseConfig.apiKey.trim() !== '';
+
+if (hasValidApiKey) {
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+  } catch (error) {
+    console.error('Failed to initialize Firebase:', error);
+  }
+} else {
+  console.warn(
+    'Firebase is not initialized because a valid VITE_FIREBASE_API_KEY was not found in the environment variables. ' +
+    'Please set up your local .env file. The app will run in offline/demo mode.'
+  );
+}
+
+export { db, auth };

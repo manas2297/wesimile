@@ -8,14 +8,14 @@ export default {
     extend: {
       colors: {
         primary: {
-          light: '#4fd1c5',
-          DEFAULT: '#38b2ac',
-          dark: '#319795',
+          light: '#fff9f6', // Soft Warm Sand / Peach
+          DEFAULT: '#c15029', // Terracotta Orange
+          dark: '#7f2b0f', // Deep Burnt Copper
         },
         secondary: {
-          light: '#9f7aea',
-          DEFAULT: '#805ad5',
-          dark: '#6b46c1',
+          light: '#fef7e6', // Soft Warm Amber Tint
+          DEFAULT: '#d97706', // Warm Amber / Gold
+          dark: '#b45309', // Dark Amber
         }
       },
     },
