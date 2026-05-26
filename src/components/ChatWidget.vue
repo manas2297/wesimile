@@ -1,24 +1,32 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
-
-interface Message {
-  text: string
-  isBot: boolean
-  isHtml?: boolean
-}
+import { ref, watch, nextTick, onMounted, computed } from 'vue'
+import { useChatSession } from '../composables/useChatSession'
 
 const isOpen = ref(false)
 const message = ref('')
-const isTyping = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
 
-const messages = ref<Message[]>([
-  { text: "Hello! 👋 I'm your WeSmile Assistant. How can I help you today?", isBot: true }
-])
+const {
+  visitorId,
+  messages: dbMessages,
+  startChatListener,
+  sendVisitorMessage
+} = useChatSession()
+
+// Combine DB messages and a local default greeting if DB is empty
+const displayMessages = computed(() => {
+  if (dbMessages.value.length === 0) {
+    return [
+      { text: "Hello! 👋 I'm your WeSmile Assistant. How can I help you today?", sender: 'admin' }
+    ]
+  }
+  return dbMessages.value
+})
 
 const toggleChat = () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
+    startChatListener()
     scrollToBottom()
   }
 }
@@ -33,9 +41,16 @@ const scrollToBottom = async () => {
   }
 }
 
-watch(messages, () => {
+watch(displayMessages, () => {
   scrollToBottom()
 }, { deep: true })
+
+onMounted(() => {
+  // If already logged in / visitor session exists, load it
+  if (localStorage.getItem('wesmile_visitor_id')) {
+    startChatListener()
+  }
+})
 
 const quickActions = [
   { label: '📅 Book Appointment', action: 'book' },
@@ -45,78 +60,89 @@ const quickActions = [
   { label: '📞 Emergency Contact', action: 'emergency' }
 ]
 
-const handleQuickAction = (action: string) => {
+const handleQuickAction = async (action: string) => {
   let userText = ''
   let botReply = ''
-  let isHtml = false
 
   switch (action) {
     case 'book':
       userText = 'How do I book an appointment?'
-      botReply = 'You can easily book an appointment by calling us directly at **+91 9559760487**, or by filling out our online request form on the <a href="/contact" class="text-primary underline font-bold">Contact Page</a>. We look forward to seeing you!'
-      isHtml = true
+      botReply = 'You can book by calling us at +91 9559760487 or via our online Contact Page.'
       break
     case 'hours':
       userText = 'What are your opening hours?'
-      botReply = 'We are open Monday to Saturday:<br>• **Morning:** 10:00 AM - 2:00 PM<br>• **Evening:** 4:30 PM - 8:30 PM<br>• **Sunday:** On Appointment only.'
-      isHtml = true
+      botReply = 'Monday to Saturday: Morning: 10:00 AM - 2:00 PM, Evening: 4:30 PM - 8:30 PM. Sunday: On Appointment.'
       break
     case 'location':
       userText = 'Where is the clinic located?'
-      botReply = 'WeSmile is located at:<br>📍 **Ground Floor, B 32/112 P, Sushant Smriti, Behind Sankat Mochan Mandir, Near Ram Mishthan, Saket Nagar, Varanasi, 221005**.'
-      isHtml = true
+      botReply = 'We are located at Ground Floor, B 32/112 P, Sushant Smriti, Behind Sankat Mochan Mandir, Near Ram Mishthan, Saket Nagar, Varanasi.'
       break
     case 'prices':
-      userText = 'Do you have any special offers or prices?'
-      botReply = 'Yes! We have premium packages available:<br>• **New Patient Package (₹999):** Exam, Digital X-rays, Ultrasonic Scaling, Hygiene consultation.<br>• **Teeth Whitening Offer (₹5999):** Consultation + Full shade whitening session.'
-      isHtml = true
+      userText = 'Do you have special offers?'
+      botReply = 'Yes! New Patient Package: ₹999 (scaling, exam, x-ray). Teeth Whitening: ₹5999.'
       break
     case 'emergency':
       userText = 'I have a dental emergency!'
-      botReply = 'If you are experiencing severe pain or a dental emergency, please call Dr. Neha immediately at **+91 9559760487**. We prioritize emergency checkups to get you out of pain fast!'
-      isHtml = true
+      botReply = 'For emergency assistance, call us immediately at +91 9559760487.'
       break
   }
 
-  messages.value.push({ text: userText, isBot: false })
-  triggerBotResponse(botReply, isHtml)
+  // 1. Write the visitor question to Firestore
+  await sendVisitorMessage(userText)
+  
+  // 2. Write the bot's auto reply to Firestore (with sender: 'admin' so admin sees it)
+  setTimeout(async () => {
+    const { addDoc, collection, serverTimestamp } = await import('firebase/firestore')
+    const { db } = await import('../config/firebase')
+    if (db && visitorId.value) {
+      await addDoc(collection(db, 'chats', visitorId.value, 'messages'), {
+        text: botReply,
+        sender: 'admin',
+        timestamp: serverTimestamp()
+      })
+    }
+  }, 800)
 }
 
-const triggerBotResponse = (replyText: string, isHtml = false) => {
-  isTyping.value = true
-  setTimeout(() => {
-    isTyping.value = false
-    messages.value.push({ text: replyText, isBot: true, isHtml })
-  }, 1000)
-}
-
-const sendMessage = () => {
+const sendMessage = async () => {
   if (!message.value.trim()) return
 
   const userQuery = message.value.trim()
-  messages.value.push({ text: userQuery, isBot: false })
   message.value = ''
 
+  // Send message to Firestore
+  await sendVisitorMessage(userQuery)
+
+  // Smart bot auto-response logic (runs if no admin is active yet)
   const queryLower = userQuery.toLowerCase()
-  let botReply = "Thanks for your message! Dr. Neha's team will get back to you shortly. You can also reach us directly at **+91 9559760487**."
-  let isHtml = false
+  let botReply = ''
 
   if (queryLower.includes('book') || queryLower.includes('appoint') || queryLower.includes('slot') || queryLower.includes('visit')) {
-    botReply = 'You can book a slot instantly by calling us at **+91 9559760487**, or via our <a href="/contact" class="text-primary underline font-bold">Contact Form</a>.'
-    isHtml = true
+    botReply = 'You can book a slot instantly by calling us at +91 9559760487, or using our Contact Form.'
   } else if (queryLower.includes('hour') || queryLower.includes('time') || queryLower.includes('open') || queryLower.includes('sunday')) {
-    botReply = 'Our hours are:<br>• **Morning:** 10:00 AM - 2:00 PM<br>• **Evening:** 4:30 PM - 8:30 PM (Mon-Sat).'
-    isHtml = true
+    botReply = 'We are open Mon-Sat: 10AM - 2PM and 4:30PM - 8:30PM.'
   } else if (queryLower.includes('address') || queryLower.includes('location') || queryLower.includes('where') || queryLower.includes('map') || queryLower.includes('varanasi')) {
     botReply = 'We are located at Ground Floor, B 32/112 P, Sushant Smriti, Behind Sankat Mochan Mandir, Near Ram Mishthan, Saket Nagar, Varanasi.'
   } else if (queryLower.includes('price') || queryLower.includes('cost') || queryLower.includes('charging') || queryLower.includes('offer') || queryLower.includes('whitening')) {
-    botReply = 'Our offers:<br>• **Oral Exam & Scaling:** ₹999<br>• **Teeth Whitening:** ₹5999.<br>Contact us for detailed crowns & implant quotes!'
-    isHtml = true
+    botReply = 'Exam & Scaling: ₹999. Teeth Whitening: ₹5999. Call us for detailed crowns & implant quotes!'
   } else if (queryLower.includes('pain') || queryLower.includes('bleed') || queryLower.includes('emergenc') || queryLower.includes('ache')) {
-    botReply = '🚨 For dental emergencies, please call us immediately at **+91 9559760487** so we can guide you and schedule an urgent slot.'
+    botReply = '🚨 Dental emergency? Call us immediately at +91 9559760487 to schedule an urgent slot.'
   }
 
-  triggerBotResponse(botReply, isHtml)
+  // If we matched a bot reply, write it to Firestore
+  if (botReply) {
+    setTimeout(async () => {
+      const { addDoc, collection, serverTimestamp } = await import('firebase/firestore')
+      const { db } = await import('../config/firebase')
+      if (db && visitorId.value) {
+        await addDoc(collection(db, 'chats', visitorId.value, 'messages'), {
+          text: botReply,
+          sender: 'admin',
+          timestamp: serverTimestamp()
+        })
+      }
+    }, 1000)
+  }
 }
 </script>
 
@@ -188,26 +214,16 @@ const sendMessage = () => {
           class="h-[320px] overflow-y-auto p-4 space-y-3.5 bg-slate-50/50"
         >
           <div 
-            v-for="(msg, index) in messages" 
+            v-for="(msg, index) in displayMessages" 
             :key="index"
             class="flex flex-col"
-            :class="msg.isBot ? 'items-start' : 'items-end'"
+            :class="msg.sender === 'admin' ? 'items-start' : 'items-end'"
           >
             <div 
               class="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm shadow-sm leading-relaxed"
-              :class="msg.isBot ? 'bg-white text-slate-800 rounded-tl-none border border-slate-100' : 'bg-primary text-white rounded-tr-none'"
+              :class="msg.sender === 'admin' ? 'bg-white text-slate-800 rounded-tl-none border border-slate-100' : 'bg-primary text-white rounded-tr-none'"
             >
-              <div v-if="msg.isHtml" v-html="msg.text"></div>
-              <div v-else>{{ msg.text }}</div>
-            </div>
-          </div>
-
-          <!-- Pulsing Typing Indicator -->
-          <div v-if="isTyping" class="flex items-start">
-            <div class="bg-white border border-slate-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm flex items-center space-x-1">
-              <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce-slow-1"></span>
-              <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce-slow-2"></span>
-              <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce-slow-3"></span>
+              <div>{{ msg.text }}</div>
             </div>
           </div>
         </div>
@@ -250,28 +266,6 @@ const sendMessage = () => {
 </template>
 
 <style scoped>
-/* Custom animations for bouncing dots */
-@keyframes bounceSlow {
-  0%, 100% {
-    transform: translateY(0);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-4px);
-    opacity: 1;
-  }
-}
-
-.animate-bounce-slow-1 {
-  animation: bounceSlow 1.2s infinite ease-in-out;
-}
-.animate-bounce-slow-2 {
-  animation: bounceSlow 1.2s infinite ease-in-out 0.2s;
-}
-.animate-bounce-slow-3 {
-  animation: bounceSlow 1.2s infinite ease-in-out 0.4s;
-}
-
 /* Custom Scrollbar for messages container */
 .overflow-y-auto {
   scrollbar-width: thin;

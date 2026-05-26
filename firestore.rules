@@ -160,5 +160,14 @@ service cloud.firestore {
       allow read: if request.auth != null && request.auth.uid == userId;
       allow write: if false;
     }
+
+    // ── Real-Time Chat ──────────────────────────────────────────────────────────
+    match /chats/{visitorId} {
+      allow read, write: if true;
+
+      match /messages/{messageId} {
+        allow read, write: if true;
+      }
+    }
   }
 }
