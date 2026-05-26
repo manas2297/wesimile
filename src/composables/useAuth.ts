@@ -5,7 +5,8 @@ import {
   onAuthStateChanged,
   User
 } from 'firebase/auth'
-import { auth } from '../config/firebase'
+import { doc, getDoc } from 'firebase/firestore'
+import { auth, db } from '../config/firebase'
 
 export function useAuth() {
   const user = ref<User | null>(null)
@@ -36,7 +37,27 @@ export function useAuth() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      user.value = userCredential.user
+      const u = userCredential.user
+
+      // Check user document for role 'admin' in Firestore
+      if (db) {
+        const userDocRef = doc(db, 'users', u.uid)
+        const userDoc = await getDoc(userDocRef)
+        
+        if (!userDoc.exists() || userDoc.data()?.role !== 'admin') {
+          await signOut(auth)
+          error.value = 'Access denied. Administrator privileges required.'
+          loading.value = false
+          return false
+        }
+      } else {
+        await signOut(auth)
+        error.value = 'Database is not initialized. Access denied.'
+        loading.value = false
+        return false
+      }
+
+      user.value = u
       return true
     } catch (err: any) {
       console.error('Login error:', err)
@@ -69,7 +90,7 @@ export function useAuth() {
 
   const logout = async () => {
     if (!auth) {
-      error.value = 'Authentication is not configured.'
+      user.value = null
       return
     }
     try {

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { auth } from '../config/firebase'
+import { auth, db } from '../config/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
 
 import Home from '../views/Home.vue'
 
@@ -59,9 +60,23 @@ const getCurrentUser = (): Promise<any> => {
     }
     const unsubscribe = onAuthStateChanged(
       auth,
-      (user) => {
+      async (user) => {
         unsubscribe()
-        resolve(user)
+        if (user && db) {
+          try {
+            const userDoc = await getDoc(doc(db, 'users', user.uid))
+            if (userDoc.exists() && userDoc.data()?.role === 'admin') {
+              resolve(user)
+            } else {
+              resolve(null)
+            }
+          } catch (e) {
+            console.error('Error verifying user role in router guard:', e)
+            resolve(null)
+          }
+        } else {
+          resolve(user)
+        }
       },
       reject
     )
