@@ -3,9 +3,11 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../config/firebase'
 import { sanitizeHtml } from '../utils/sanitize'
 import { useRateLimit } from './useRateLimit'
+import { useAntiBot } from './useAntiBot'
 
 export function useStudentForm() {
   const { isRateLimited } = useRateLimit()
+  const { honeypot, checkBot } = useAntiBot()
 
   const fullName = ref('')
   const email = ref('')
@@ -20,9 +22,16 @@ export function useStudentForm() {
   const submitError = ref('')
   const submitSuccess = ref(false)
 
+  const normalizePhone = (phoneStr: string): string => {
+    const digits = phoneStr.replace(/\D/g, '')
+    if (phoneStr.trim().startsWith('+91')) return '+91' + digits.slice(digits.startsWith('91') ? 2 : 0)
+    if (digits.startsWith('91') && digits.length === 12) return '+91' + digits.slice(2)
+    return digits.startsWith('0') ? digits.slice(1) : digits
+  }
+
   const validateForm = () => {
-    if (!fullName.value.trim()) {
-      submitError.value = 'Full Name is required'
+    if (!fullName.value.trim() || fullName.value.trim().length < 2) {
+      submitError.value = 'Full Name must be at least 2 characters'
       return false
     }
     if (!email.value.trim()) {
@@ -33,24 +42,24 @@ export function useStudentForm() {
       submitError.value = 'Phone number is required'
       return false
     }
-    if (!school.value.trim()) {
-      submitError.value = 'Dental School/University is required'
+    if (!school.value.trim() || school.value.trim().length < 2) {
+      submitError.value = 'Dental School/University must be at least 2 characters'
       return false
     }
-    if (!yearOfStudy.value) {
+    if (!yearOfStudy.value || yearOfStudy.value.trim().length < 2) {
       submitError.value = 'Year of Study is required'
       return false
     }
-    if (!specialtyInterest.value) {
+    if (!specialtyInterest.value || specialtyInterest.value.trim().length < 2) {
       submitError.value = 'Specialty Area is required'
       return false
     }
-    if (!resumeUrl.value.trim()) {
+    if (!resumeUrl.value.trim() || resumeUrl.value.trim().length < 5) {
       submitError.value = 'Resume or LinkedIn URL is required'
       return false
     }
-    if (!message.value.trim()) {
-      submitError.value = 'Message is required'
+    if (!message.value.trim() || message.value.trim().length < 10) {
+      submitError.value = 'Message must be at least 10 characters'
       return false
     }
     return true
@@ -79,6 +88,14 @@ export function useStudentForm() {
     submitSuccess.value = false
 
     try {
+      // Bot detection
+      const botError = checkBot()
+      if (botError) {
+        submitError.value = botError
+        isSubmitting.value = false
+        return
+      }
+
       if (!validateForm()) {
         isSubmitting.value = false
         return
@@ -105,7 +122,7 @@ export function useStudentForm() {
       const sanitizedData = {
         fullName: sanitizeHtml(fullName.value.trim()),
         email: email.value.trim().toLowerCase(),
-        phone: phone.value.trim(),
+        phone: normalizePhone(phone.value.trim()),
         school: sanitizeHtml(school.value.trim()),
         yearOfStudy: sanitizeHtml(yearOfStudy.value),
         specialtyInterest: sanitizeHtml(specialtyInterest.value),
@@ -168,6 +185,7 @@ export function useStudentForm() {
     specialtyInterest,
     resumeUrl,
     message,
+    honeypot,
     isSubmitting,
     submitError,
     submitSuccess,

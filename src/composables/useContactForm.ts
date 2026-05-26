@@ -4,9 +4,11 @@ import { db } from '../config/firebase'
 import { ref } from 'vue'
 import { sanitizeHtml } from '../utils/sanitize'
 import { useRateLimit } from './useRateLimit'
+import { useAntiBot } from './useAntiBot'
 
 export function useContactForm() {
   const { isRateLimited } = useRateLimit()
+  const { honeypot, checkBot } = useAntiBot()
   
   const name = ref('')
   const email = ref('')
@@ -16,9 +18,18 @@ export function useContactForm() {
   const submitError = ref('')
   const submitSuccess = ref(false)
 
+  const normalizePhone = (phoneStr: string): string => {
+    const digits = phoneStr.replace(/\D/g, '')
+    // Preserve +91 prefix if originally present
+    if (phoneStr.trim().startsWith('+91')) return '+91' + digits.slice(digits.startsWith('91') ? 2 : 0)
+    // Strip leading 0 (landline style) but keep plain 10-digit
+    if (digits.startsWith('91') && digits.length === 12) return '+91' + digits.slice(2)
+    return digits.startsWith('0') ? digits.slice(1) : digits
+  }
+
   const validateForm = () => {
-    if (!name.value) {
-      submitError.value = 'Name is required'
+    if (!name.value || name.value.trim().length < 2) {
+      submitError.value = 'Name must be at least 2 characters'
       return false
     }
     if (!email.value) {
@@ -29,8 +40,8 @@ export function useContactForm() {
       submitError.value = 'Phone is required'
       return false
     }
-    if (!message.value) {
-      submitError.value = 'Message is required'
+    if (!message.value || message.value.trim().length < 10) {
+      submitError.value = 'Message must be at least 10 characters'
       return false
     }
     return true
@@ -87,6 +98,14 @@ export function useContactForm() {
     submitSuccess.value = false
 
     try {
+      // Bot detection — must run before any other logic
+      const botError = checkBot()
+      if (botError) {
+        submitError.value = botError
+        isSubmitting.value = false
+        return
+      }
+
       // First validate all fields
       if (!validateForm()) {
         isSubmitting.value = false
@@ -118,7 +137,7 @@ export function useContactForm() {
       const sanitizedData = {
         name: sanitizeHtml(name.value.trim()),
         email: email.value.trim().toLowerCase(),
-        phone: phone.value.trim(),
+        phone: normalizePhone(phone.value.trim()),
         message: sanitizeHtml(message.value.trim())
       }
 
@@ -171,6 +190,7 @@ export function useContactForm() {
     email,
     phone,
     message,
+    honeypot,
     isSubmitting,
     submitError,
     submitSuccess,

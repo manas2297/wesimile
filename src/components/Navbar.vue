@@ -67,10 +67,15 @@ const navItems = [
   <header :class="headerClasses">
     <div class="container-custom">
       <div class="flex justify-between items-center">
-        <!-- Logo -->
         <div class="flex items-center">
-          <router-link to="/" :class="logoClasses">
-            WeSmile
+          <router-link to="/" :class="[logoClasses, 'flex items-center space-x-2.5']">
+            <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="8" height="8" rx="2.5" />
+              <rect x="13" y="3" width="8" height="8" rx="2.5" />
+              <rect x="3" y="13" width="8" height="8" rx="2.5" />
+              <rect x="14.5" y="14.5" width="6.5" height="6.5" rx="2" class="opacity-95" />
+            </svg>
+            <span class="font-extrabold tracking-tight">WeSmile</span>
           </router-link>
         </div>
         
@@ -86,15 +91,16 @@ const navItems = [
               :to="item.path" 
               :class="[
                 isTransparent 
-                  ? 'text-white/80 hover:text-white' 
-                  : 'text-slate-600 hover:text-primary',
+                  ? 'text-white/80 hover:text-white flex items-center' 
+                  : 'text-slate-600 hover:text-primary flex items-center',
                 isLinkActive(item.path) 
                   ? (isTransparent ? 'text-white font-bold border-b-2 border-white pb-1' : 'text-primary font-bold border-b-2 border-primary pb-1')
                   : 'border-b-2 border-transparent pb-1',
                 'transition-all duration-300 ease-in-out font-medium text-sm tracking-wide'
               ]"
             >
-              {{ t(item.label) }}
+              <span class="w-1.5 h-1.5 rounded-full inline-block shrink-0 mr-1.5 transition-colors duration-300" :class="isTransparent ? 'bg-amber-300/90 shadow-[0_0_8px_rgba(253,216,53,0.6)]' : 'bg-secondary'"></span>
+              <span>{{ t(item.label) }}</span>
             </router-link>
             
             <!-- Appointment Button -->

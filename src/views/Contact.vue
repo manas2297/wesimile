@@ -16,6 +16,16 @@
               id="contact-form"
               autocomplete="on">
               <input type="hidden" name="form-name" value="contact" />
+              <!-- Honeypot: hidden from real users, bots will fill this -->
+              <input
+                type="text"
+                name="_hp_website"
+                v-model="honeypot"
+                tabindex="-1"
+                autocomplete="off"
+                aria-hidden="true"
+                style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;"
+              />
               <div v-if="submitSuccess" class="p-4 bg-green-50 text-green-700 rounded-md border border-green-200 mb-6">
                 Thank you for your message! We'll get back to you soon.
               </div>
@@ -191,6 +201,7 @@ const {
   email,
   phone,
   message,
+  honeypot,
   isSubmitting,
   submitError,
   submitSuccess,

@@ -8,14 +8,14 @@ export default {
     extend: {
       colors: {
         primary: {
-          light: '#f0f7ff', // Soft Ice Blue background
-          DEFAULT: '#0f2d59', // Deep Navy Blue
-          dark: '#0a1e3b',
+          light: '#fff9f6', // Soft Warm Sand / Peach
+          DEFAULT: '#c15029', // Terracotta Orange
+          dark: '#7f2b0f', // Deep Burnt Copper
         },
         secondary: {
-          light: '#e6fffa', // Soft Mint/Teal background
-          DEFAULT: '#0d9488', // Medical Teal
-          dark: '#0f766e',
+          light: '#fef7e6', // Soft Warm Amber Tint
+          DEFAULT: '#d97706', // Warm Amber / Gold
+          dark: '#b45309', // Dark Amber
         }
       },
     },

@@ -4,7 +4,7 @@
       
       <!-- Header / Introduction -->
       <div class="text-center mb-16">
-        <span class="text-teal-600 font-bold uppercase tracking-wider text-xs bg-teal-50 px-3 py-1.5 rounded-full border border-teal-100">B2B Collaboration</span>
+        <span class="text-secondary font-bold uppercase tracking-wider text-xs bg-secondary-light px-3 py-1.5 rounded-full border border-secondary/20">B2B Collaboration</span>
         <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 tracking-tight">
           Dental Product & Tech <span class="text-primary">Partnerships</span>
         </h1>
@@ -18,7 +18,7 @@
         <div class="lg:col-span-5 space-y-6">
           <div class="bg-white p-6 rounded-md border border-slate-200 shadow-sm">
             <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center">
-              <span class="w-2 h-6 bg-teal-600 rounded mr-2.5"></span>
+              <span class="w-2 h-6 bg-secondary rounded mr-2.5"></span>
               Clinical Trials & Validation
             </h3>
             <p class="text-slate-600 text-sm leading-relaxed">
@@ -28,7 +28,7 @@
 
           <div class="bg-white p-6 rounded-md border border-slate-200 shadow-sm">
             <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center">
-              <span class="w-2 h-6 bg-teal-600 rounded mr-2.5"></span>
+              <span class="w-2 h-6 bg-secondary rounded mr-2.5"></span>
               Product Distribution
             </h3>
             <p class="text-slate-600 text-sm leading-relaxed">
@@ -38,7 +38,7 @@
 
           <div class="bg-white p-6 rounded-md border border-slate-200 shadow-sm">
             <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center">
-              <span class="w-2 h-6 bg-teal-600 rounded mr-2.5"></span>
+              <span class="w-2 h-6 bg-secondary rounded mr-2.5"></span>
               Co-Branded Aligners
             </h3>
             <p class="text-slate-600 text-sm leading-relaxed">
@@ -53,14 +53,14 @@
             <h2 class="text-xl font-bold text-slate-900 mb-6">Partnership Application</h2>
 
             <!-- Success Alert -->
-            <div v-if="submitSuccess" class="bg-teal-50 border border-teal-200 text-teal-800 rounded-md p-4 mb-6 text-sm">
+            <div v-if="submitSuccess" class="bg-secondary-light border border-secondary/30 text-secondary-dark rounded-md p-4 mb-6 text-sm">
               <div class="flex items-center space-x-2 font-semibold">
-                <svg class="h-5 w-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="h-5 w-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span>Submission Successful!</span>
               </div>
-              <p class="mt-2 text-teal-700">Thank you for reaching out. Our business development team will review your proposal and contact you shortly.</p>
+              <p class="mt-2 text-secondary-dark">Thank you for reaching out. Our business development team will review your proposal and contact you shortly.</p>
             </div>
 
             <!-- Error Alert -->
@@ -76,6 +76,16 @@
 
             <!-- Form -->
             <form @submit.prevent="handleSubmit" class="space-y-5">
+              <!-- Honeypot: hidden from real users, bots will fill this -->
+              <input
+                type="text"
+                name="_hp_website"
+                v-model="honeypot"
+                tabindex="-1"
+                autocomplete="off"
+                aria-hidden="true"
+                style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;"
+              />
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label for="companyName" class="block text-sm font-semibold text-slate-700 mb-1">Company Name</label>
@@ -86,7 +96,7 @@
                     required
                     maxlength="100"
                     placeholder="e.g. Acme Dental Tech"
-                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent transition-shadow text-sm"
+                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow text-sm"
                   />
                 </div>
                 
@@ -99,7 +109,7 @@
                     required
                     maxlength="100"
                     placeholder="e.g. Dr. Rohan Sharma"
-                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent transition-shadow text-sm"
+                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow text-sm"
                   />
                 </div>
               </div>
@@ -114,7 +124,7 @@
                     required
                     maxlength="100"
                     placeholder="rohan@company.com"
-                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent transition-shadow text-sm"
+                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow text-sm"
                   />
                 </div>
                 
@@ -127,7 +137,7 @@
                     required
                     maxlength="15"
                     placeholder="e.g. 9876543210"
-                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent transition-shadow text-sm"
+                    class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow text-sm"
                   />
                 </div>
               </div>
@@ -137,7 +147,7 @@
                 <select
                   v-model="partnershipType"
                   id="partnershipType"
-                  class="block w-full border border-slate-300 rounded-md px-3 py-2 text-slate-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent bg-white text-sm"
+                  class="block w-full border border-slate-300 rounded-md px-3 py-2 text-slate-900 focus:ring-2 focus:ring-secondary focus:border-transparent bg-white text-sm"
                 >
                   <option value="clinical_trials">Clinical Trials & AI Diagnostics</option>
                   <option value="distribution">Retail & Distribution Partnerships</option>
@@ -155,7 +165,7 @@
                   rows="4"
                   maxlength="1000"
                   placeholder="Outline your partnership concept, product detail, or integration proposal..."
-                  class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent transition-shadow text-sm"
+                  class="block w-full border border-slate-300 rounded-md px-3.5 py-2 text-slate-900 focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow text-sm"
                 ></textarea>
               </div>
 
@@ -188,6 +198,7 @@ const {
   phone,
   partnershipType,
   message,
+  honeypot,
   isSubmitting,
   submitError,
   submitSuccess,

@@ -3,9 +3,11 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../config/firebase'
 import { sanitizeHtml } from '../utils/sanitize'
 import { useRateLimit } from './useRateLimit'
+import { useAntiBot } from './useAntiBot'
 
 export function usePartnershipForm() {
   const { isRateLimited } = useRateLimit()
+  const { honeypot, checkBot } = useAntiBot()
 
   const companyName = ref('')
   const contactName = ref('')
@@ -18,13 +20,20 @@ export function usePartnershipForm() {
   const submitError = ref('')
   const submitSuccess = ref(false)
 
+  const normalizePhone = (phoneStr: string): string => {
+    const digits = phoneStr.replace(/\D/g, '')
+    if (phoneStr.trim().startsWith('+91')) return '+91' + digits.slice(digits.startsWith('91') ? 2 : 0)
+    if (digits.startsWith('91') && digits.length === 12) return '+91' + digits.slice(2)
+    return digits.startsWith('0') ? digits.slice(1) : digits
+  }
+
   const validateForm = () => {
-    if (!companyName.value.trim()) {
-      submitError.value = 'Company Name is required'
+    if (!companyName.value.trim() || companyName.value.trim().length < 2) {
+      submitError.value = 'Company Name must be at least 2 characters'
       return false
     }
-    if (!contactName.value.trim()) {
-      submitError.value = 'Contact Person Name is required'
+    if (!contactName.value.trim() || contactName.value.trim().length < 2) {
+      submitError.value = 'Contact Person Name must be at least 2 characters'
       return false
     }
     if (!email.value.trim()) {
@@ -35,12 +44,12 @@ export function usePartnershipForm() {
       submitError.value = 'Phone number is required'
       return false
     }
-    if (!partnershipType.value) {
+    if (!partnershipType.value || partnershipType.value.trim().length < 2) {
       submitError.value = 'Partnership Type is required'
       return false
     }
-    if (!message.value.trim()) {
-      submitError.value = 'Message is required'
+    if (!message.value.trim() || message.value.trim().length < 10) {
+      submitError.value = 'Message must be at least 10 characters'
       return false
     }
     return true
@@ -69,6 +78,14 @@ export function usePartnershipForm() {
     submitSuccess.value = false
 
     try {
+      // Bot detection
+      const botError = checkBot()
+      if (botError) {
+        submitError.value = botError
+        isSubmitting.value = false
+        return
+      }
+
       if (!validateForm()) {
         isSubmitting.value = false
         return
@@ -96,7 +113,7 @@ export function usePartnershipForm() {
         companyName: sanitizeHtml(companyName.value.trim()),
         contactName: sanitizeHtml(contactName.value.trim()),
         email: email.value.trim().toLowerCase(),
-        phone: phone.value.trim(),
+        phone: normalizePhone(phone.value.trim()),
         partnershipType: sanitizeHtml(partnershipType.value),
         message: sanitizeHtml(message.value.trim())
       }
@@ -150,6 +167,7 @@ export function usePartnershipForm() {
     phone,
     partnershipType,
     message,
+    honeypot,
     isSubmitting,
     submitError,
     submitSuccess,

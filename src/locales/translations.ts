@@ -16,6 +16,7 @@ export const translations = {
     hero: {
       welcome: 'WeSmile Multi-Speciality Dental Clinic',
       title: 'You Smile, We Too',
+      tagline: 'From preventive care to complex restorations, a comprehensive approach to your dental health.',
       subtitle: 'Experience exceptional dental care with our team of experts. We\'re committed to giving you the healthy, beautiful smile you deserve.',
       cta: 'Book Appointment',
       learnMore: 'Learn More'
@@ -35,6 +36,7 @@ export const translations = {
     hero: {
       welcome: 'वीस्माइल मल्टी स्पेशलिटी डेंटल क्लिनिक में आपका स्वागत है',
       title: 'आप मुस्कुराएं, हम भी',
+      tagline: 'निवारक देखभाल से लेकर जटिल उपचार तक, आपके दंत स्वास्थ्य के लिए एक व्यापक दृष्टिकोण।',
       subtitle: 'हमारी विशेषज्ञ टीम के साथ उत्कृष्ट दंत चिकित्सा का अनुभव करें। हम आपको स्वास्थ्य और सुंदर मुस्कान देने का पुष्टि करते हैं।',
       cta: 'अपॉइंटमेंट बुक करें',
       learnMore: 'और जानें'

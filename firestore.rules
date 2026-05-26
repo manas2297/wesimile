@@ -1,33 +1,59 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ── Shared helpers ────────────────────────────────────────────────────────
+
     function hasValidTimestamp() {
       return request.resource.data.timestamp == request.time;
     }
 
     function hasValidMetadata() {
+      // userAgent must be a non-empty string; ipAddress must be a non-empty string
       return request.resource.data.userAgent is string &&
-             request.resource.data.ipAddress is string;
+             request.resource.data.userAgent.size() > 0 &&
+             request.resource.data.ipAddress is string &&
+             request.resource.data.ipAddress.size() > 0;
     }
-    
+
+    function validEmail(e) {
+      return e is string &&
+             e.size() >= 5 &&
+             e.size() <= 100 &&
+             e.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$');
+    }
+
+    // Phone must be digits-only after normalisation: optional +91 / 0 prefix + 10-digit number
+    function validPhone(p) {
+      return p is string &&
+             p.size() >= 10 &&
+             p.size() <= 15 &&
+             p.matches('^(\\+91|0)?[6-9][0-9]{9}$');
+    }
+
+    // ── Contact Submissions ────────────────────────────────────────────────────
     match /contactSubmissions/{document} {
       allow create: if
-        // Basic validations
+        // Prevent extra fields (exactly the expected keys)
+        request.resource.data.keys().hasOnly([
+          'name', 'email', 'phone', 'message',
+          'timestamp', 'userAgent', 'ipAddress'
+        ]) &&
+
+        // Type checks
         request.resource.data.name is string &&
-        request.resource.data.email is string &&
-        request.resource.data.phone is string &&
         request.resource.data.message is string &&
-        
-        // Length checks
+
+        // Length checks (min + max)
+        request.resource.data.name.size() >= 2 &&
         request.resource.data.name.size() <= 100 &&
-        request.resource.data.email.size() <= 100 &&
-        request.resource.data.phone.size() <= 15 &&
+        request.resource.data.message.size() >= 10 &&
         request.resource.data.message.size() <= 1000 &&
-        
+
         // Format validations
-        request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') &&
-        request.resource.data.phone.matches('^(\\+91|0)?[6-9]\\d{9}$') &&
-        
+        validEmail(request.resource.data.email) &&
+        validPhone(request.resource.data.phone) &&
+
         // Metadata validations
         hasValidTimestamp() &&
         hasValidMetadata();
@@ -36,28 +62,36 @@ service cloud.firestore {
       allow read, delete: if request.auth != null;
     }
 
+    // ── B2B Partnerships ───────────────────────────────────────────────────────
     match /b2bPartnerships/{document} {
       allow create: if
-        // Basic validations
+        // Prevent extra fields
+        request.resource.data.keys().hasOnly([
+          'companyName', 'contactName', 'email', 'phone',
+          'partnershipType', 'message',
+          'timestamp', 'userAgent', 'ipAddress'
+        ]) &&
+
+        // Type checks
         request.resource.data.companyName is string &&
         request.resource.data.contactName is string &&
-        request.resource.data.email is string &&
-        request.resource.data.phone is string &&
         request.resource.data.partnershipType is string &&
         request.resource.data.message is string &&
-        
-        // Length checks
+
+        // Length checks (min + max)
+        request.resource.data.companyName.size() >= 2 &&
         request.resource.data.companyName.size() <= 100 &&
+        request.resource.data.contactName.size() >= 2 &&
         request.resource.data.contactName.size() <= 100 &&
-        request.resource.data.email.size() <= 100 &&
-        request.resource.data.phone.size() <= 15 &&
+        request.resource.data.partnershipType.size() >= 2 &&
         request.resource.data.partnershipType.size() <= 50 &&
+        request.resource.data.message.size() >= 10 &&
         request.resource.data.message.size() <= 1000 &&
-        
+
         // Format validations
-        request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') &&
-        request.resource.data.phone.matches('^(\\+91|0)?[6-9]\\d{9}$') &&
-        
+        validEmail(request.resource.data.email) &&
+        validPhone(request.resource.data.phone) &&
+
         // Metadata validations
         hasValidTimestamp() &&
         hasValidMetadata();
@@ -66,32 +100,42 @@ service cloud.firestore {
       allow read, delete: if request.auth != null;
     }
 
+    // ── Student Applications ───────────────────────────────────────────────────
     match /studentApplications/{document} {
       allow create: if
-        // Basic validations
+        // Prevent extra fields
+        request.resource.data.keys().hasOnly([
+          'fullName', 'email', 'phone', 'school',
+          'yearOfStudy', 'specialtyInterest', 'resumeUrl', 'message',
+          'timestamp', 'userAgent', 'ipAddress'
+        ]) &&
+
+        // Type checks
         request.resource.data.fullName is string &&
-        request.resource.data.email is string &&
-        request.resource.data.phone is string &&
         request.resource.data.school is string &&
         request.resource.data.yearOfStudy is string &&
         request.resource.data.specialtyInterest is string &&
         request.resource.data.resumeUrl is string &&
         request.resource.data.message is string &&
-        
-        // Length checks
+
+        // Length checks (min + max)
+        request.resource.data.fullName.size() >= 2 &&
         request.resource.data.fullName.size() <= 100 &&
-        request.resource.data.email.size() <= 100 &&
-        request.resource.data.phone.size() <= 15 &&
+        request.resource.data.school.size() >= 2 &&
         request.resource.data.school.size() <= 150 &&
+        request.resource.data.yearOfStudy.size() >= 2 &&
         request.resource.data.yearOfStudy.size() <= 50 &&
+        request.resource.data.specialtyInterest.size() >= 2 &&
         request.resource.data.specialtyInterest.size() <= 50 &&
+        request.resource.data.resumeUrl.size() >= 5 &&
         request.resource.data.resumeUrl.size() <= 250 &&
+        request.resource.data.message.size() >= 10 &&
         request.resource.data.message.size() <= 1000 &&
-        
+
         // Format validations
-        request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$') &&
-        request.resource.data.phone.matches('^(\\+91|0)?[6-9]\\d{9}$') &&
-        
+        validEmail(request.resource.data.email) &&
+        validPhone(request.resource.data.phone) &&
+
         // Metadata validations
         hasValidTimestamp() &&
         hasValidMetadata();
@@ -99,10 +143,16 @@ service cloud.firestore {
       // Only authenticated admin users can read and delete
       allow read, delete: if request.auth != null;
     }
-    
-    // Rate limiting collection
+
+    // ── Rate Limits ────────────────────────────────────────────────────────────
+    // Only allow the server-side rate limit reads; deny arbitrary writes from clients.
     match /rateLimits/{document=**} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if
+        request.resource.data.keys().hasOnly(['count', 'lastAttempt', 'windowStart']) &&
+        request.resource.data.count is int &&
+        request.resource.data.count >= 0 &&
+        request.resource.data.count <= 100;
     }
   }
 }

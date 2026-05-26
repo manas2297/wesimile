@@ -82,8 +82,8 @@
               <p class="text-sm font-semibold text-slate-600">Total Submissions</p>
               <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ submissions.length }}</p>
             </div>
-            <div class="w-12 h-12 bg-teal-50 rounded-md flex items-center justify-center">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-secondary-light rounded-md flex items-center justify-center">
+              <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
               </svg>
             </div>
@@ -96,8 +96,8 @@
               <p class="text-sm font-semibold text-slate-600">Filtered Results</p>
               <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ filteredSubmissions.length }}</p>
             </div>
-            <div class="w-12 h-12 bg-teal-50 rounded-md flex items-center justify-center">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-secondary-light rounded-md flex items-center justify-center">
+              <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
               </svg>
             </div>
@@ -112,8 +112,8 @@
                 {{ latestSubmissionTime }}
               </p>
             </div>
-            <div class="w-12 h-12 bg-teal-50 rounded-md flex items-center justify-center">
-              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-secondary-light rounded-md flex items-center justify-center">
+              <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -193,7 +193,7 @@
 
       <!-- Loading State -->
       <div v-if="loading && submissions.length === 0" class="bg-white rounded-md shadow-sm border border-slate-200 p-12 text-center">
-        <svg class="animate-spin h-12 w-12 text-teal-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin h-12 w-12 text-secondary mx-auto mb-4" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
@@ -309,7 +309,7 @@
                   <div class="text-slate-500 text-xs font-medium">{{ submission.phone }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                  <span class="px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded text-xs font-bold">
+                  <span class="px-2.5 py-1 bg-secondary-light text-secondary-dark border border-secondary/20 rounded text-xs font-bold">
                     {{ formatPartnershipFocus((submission as any).partnershipType) }}
                   </span>
                 </td>
@@ -372,7 +372,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                   <div class="font-medium text-slate-900">{{ formatYearOfStudy((submission as any).yearOfStudy) }}</div>
-                  <div class="text-xs text-teal-600 font-semibold mt-0.5">{{ formatSpecialtyInterest((submission as any).specialtyInterest) }}</div>
+                  <div class="text-xs text-secondary font-semibold mt-0.5">{{ formatSpecialtyInterest((submission as any).specialtyInterest) }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
                   <a :href="(submission as any).resumeUrl" target="_blank" class="text-primary hover:underline font-bold text-xs inline-flex items-center space-x-1">
@@ -439,7 +439,7 @@
             <div class="mt-3">
               <label class="text-sm font-semibold text-slate-500">Partnership Focus</label>
               <p class="mt-1">
-                <span class="px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded text-xs font-bold">
+                <span class="px-2.5 py-1 bg-secondary-light text-secondary-dark border border-secondary/20 rounded text-xs font-bold">
                   {{ formatPartnershipFocus((selectedSubmission as any).partnershipType) }}
                 </span>
               </p>
@@ -464,7 +464,7 @@
             </div>
             <div class="mt-3">
               <label class="text-sm font-semibold text-slate-500">Specialty Interest Focus</label>
-              <p class="text-teal-700 mt-1 font-bold text-sm">{{ formatSpecialtyInterest((selectedSubmission as any).specialtyInterest) }}</p>
+              <p class="text-secondary-dark mt-1 font-bold text-sm">{{ formatSpecialtyInterest((selectedSubmission as any).specialtyInterest) }}</p>
             </div>
             <div class="mt-3">
               <label class="text-sm font-semibold text-slate-500">Resume / CV Link</label>

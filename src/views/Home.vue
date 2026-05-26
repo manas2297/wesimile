@@ -1,110 +1,95 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-primary to-primary-dark text-white overflow-hidden">
-      <!-- Animated background pattern -->
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
+    <section class="relative min-h-[95vh] lg:min-h-screen bg-gradient-to-br from-[#c15029] via-[#ac401a] to-[#7f2b0f] text-white flex flex-col justify-between overflow-hidden">
+      <!-- Ambient light glowing effects -->
+      <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <!-- Center bright glow behind implant -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-200/25 via-orange-300/10 to-transparent rounded-full blur-[130px]"></div>
+        <!-- Left ambient light -->
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-[120px]"></div>
+        <!-- Subtle dark vignette at the bottom/sides -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/15"></div>
       </div>
 
-      <div class="container-custom pt-28 pb-20 md:pt-40 md:pb-32 relative">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <!-- Text Content -->
-          <div class="animate-fade-in-left space-y-6">
-            <div class="inline-block bg-secondary-light px-4 py-1.5 rounded-md text-sm font-semibold mb-6 border border-secondary/20 text-secondary">
-              <span class="uppercase tracking-wider font-bold">
+      <!-- Main Content Container -->
+      <div class="container-custom flex-grow flex flex-col justify-center relative z-10 pt-28 lg:pt-32 pb-0">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch w-full py-6 lg:py-10">
+          
+          <!-- Column 1: Headline, Subtitle & CTAs -->
+          <div class="lg:col-span-7 flex flex-col justify-center space-y-6 lg:space-y-8 animate-fade-in-left">
+            <!-- Welcome Tag -->
+            <div class="inline-block bg-white/10 backdrop-blur-md px-6 py-2 rounded-full text-sm font-semibold max-w-max border border-white/10 text-white/90">
+              <span class="tracking-wide font-bold">
                 {{ t('hero.welcome') }}
               </span>
             </div>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              {{ t('hero.title') }}
+            
+            <!-- Headline (typographic contrast: normal/light vs bold) -->
+            <h1 class="text-6xl md:text-7xl lg:text-[6.5rem] font-light leading-[1.0] tracking-tight text-white select-none">
+              You Smile,<br />
+              <span class="font-bold text-white">We Too</span>
             </h1>
-            <p class="text-xl md:text-2xl text-slate-200">
+            
+            <p class="text-lg md:text-xl text-white/85 max-w-[540px] leading-relaxed">
               {{ t('hero.subtitle') }}
             </p>
             
             <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
+            <div class="flex flex-col sm:flex-row gap-4 pt-2">
               <router-link 
                 to="/contact" 
-                class="btn bg-secondary text-white hover:bg-secondary-dark transform hover:-translate-y-0.5 transition-all duration-300 text-center group"
+                class="btn bg-white text-[#ac401a] hover:bg-white/90 shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 text-center font-bold px-8 py-3.5 rounded-lg"
               >
                 {{ t('hero.cta') }}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 inline-block transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
               </router-link>
               <router-link 
                 to="/about" 
-                class="btn border border-white/50 text-white hover:bg-white/10 transform hover:-translate-y-0.5 transition-all duration-300 text-center"
+                class="btn border border-white/30 text-white hover:bg-white/10 transform hover:-translate-y-0.5 transition-all duration-300 text-center font-semibold px-8 py-3.5 rounded-lg"
               >
                 {{ t('hero.learnMore') }}
               </router-link>
             </div>
-
-            <!-- Trust Indicators -->
-            <div class="flex flex-wrap gap-6 pt-8">
-              <div class="flex items-center space-x-2">
-                <div class="bg-white/10 rounded-md p-2 text-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <span class="text-sm text-slate-100 font-medium">Expert Dentist</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="bg-white/10 rounded-md p-2 text-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <span class="text-sm text-slate-100 font-medium">Affordable Care</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <div class="bg-white/10 rounded-md p-2 text-secondary">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                  </svg>
-                </div>
-                <span class="text-sm text-slate-100 font-medium">7+ Years Experience</span>
-              </div>
-            </div>
           </div>
-
-          <!-- Image Section -->
-          <div class="hidden md:block animate-fade-in-right relative">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/30 to-transparent rounded-2xl"></div>
+          
+          <!-- Column 2: Premium Clinic/Dental Image -->
+          <div class="lg:col-span-5 flex justify-center items-center relative py-6 lg:py-0 min-h-[360px] lg:min-h-[480px] animate-fade-in-right">
+            <!-- Ambient glows behind the image -->
+            <div class="absolute w-[320px] h-[320px] bg-amber-400/10 rounded-full blur-[80px] pointer-events-none"></div>
+            <div class="absolute w-56 h-56 bg-orange-500/15 rounded-full blur-[60px] pointer-events-none"></div>
+            
             <img 
-              src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
-              alt="Dental Care" 
-              class="rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500 object-cover w-full h-[600px]"
-            >
-            <!-- Floating Achievement Cards -->
-            <div class="absolute -left-8 top-1/4 bg-white p-4 rounded-md border border-slate-100 shadow-md transform hover:-translate-y-1 transition-transform duration-300">
-              <div class="flex items-center space-x-3">
-                <div class="bg-secondary-light rounded-md p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-slate-800 font-semibold">Expert Dentist</p>
-                  <p class="text-slate-500 text-sm">Highly Qualified</p>
-                </div>
-              </div>
+              :src="perfectSmileHero" 
+              alt="WeSmile Premium Dental Clinic" 
+              class="relative z-10 w-full max-w-[340px] md:max-w-[380px] lg:max-w-full h-[380px] md:h-[420px] lg:h-[480px] object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10 select-none pointer-events-none transform hover:scale-[1.02] transition-transform duration-500"
+            />
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- Bottom Row Metadata Stats -->
+      <div class="border-t border-white/15 w-full mt-auto">
+        <div class="container-custom">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-0 text-left">
+            <!-- Stat 1 -->
+            <div class="md:col-span-5 py-4 md:py-6 md:pr-8 flex flex-col justify-center space-y-1 border-b border-white/10 md:border-b-0 md:border-r border-white/15">
+              <span class="text-white/60 text-[10px] md:text-xs font-semibold uppercase tracking-widest">Clinical Reputation</span>
+              <span class="text-sm md:text-base font-bold text-white tracking-wider">Varanasi's Leading Dentistry 2026</span>
             </div>
-            <div class="absolute -right-8 bottom-1/4 bg-white p-4 rounded-md border border-slate-100 shadow-md transform hover:-translate-y-1 transition-transform duration-300">
-              <div class="flex items-center space-x-3">
-                <div class="bg-secondary-light rounded-md p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-slate-800 font-semibold">Affordable Care</p>
-                  <p class="text-slate-500 text-sm">Best Quality Plans</p>
-                </div>
-              </div>
+            
+            <!-- Stat 2 -->
+            <div class="md:col-span-4 py-4 md:py-6 md:px-8 flex flex-col justify-center space-y-1 border-b border-white/10 md:border-b-0 md:border-r border-white/15">
+              <span class="text-white/60 text-[10px] md:text-xs font-semibold uppercase tracking-widest">Varanasi Local Time</span>
+              <span class="text-sm md:text-base font-bold text-white font-mono tracking-wider">
+                {{ localTime || '19:00:00 GMT+5:30' }}
+              </span>
+            </div>
+            
+            <!-- Stat 3 -->
+            <div class="md:col-span-3 py-4 md:py-6 md:pl-8 flex flex-col justify-center space-y-1">
+              <span class="text-white/60 text-[10px] md:text-xs font-semibold uppercase tracking-widest">Advanced Technology</span>
+              <span class="text-sm md:text-base font-bold text-white tracking-wider">Micro-Endodontics & 3D Imaging</span>
             </div>
           </div>
         </div>
@@ -354,13 +339,38 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useHome } from '../composables/useHome'
 import { useTranslations } from '../locales/translations'
 import TestimonialSlider from '../components/TestimonialSlider.vue'
 import CTASection from '../components/CTASection.vue'
+import perfectSmileHero from '../assets/perfect_smile_hero.png'
 
 const { featuredServices, testimonials, specialOffers } = useHome()
 const { t } = useTranslations()
+
+// Live local Varanasi time clock
+const localTime = ref('')
+const updateTime = () => {
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }
+  try {
+    localTime.value = new Intl.DateTimeFormat('en-US', options).format(new Date()) + ' GMT+5:30'
+  } catch (e) {
+    localTime.value = new Date().toLocaleTimeString()
+  }
+}
+
+onMounted(() => {
+  updateTime()
+  const timer = setInterval(updateTime, 1000)
+  onUnmounted(() => clearInterval(timer))
+})
 </script>
 
 <style>
@@ -398,6 +408,15 @@ const { t } = useTranslations()
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
 /* Animation Classes */
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
@@ -412,6 +431,10 @@ const { t } = useTranslations()
 .animate-fade-in-right {
   animation: fadeInRight 0.6s ease-out forwards;
   opacity: 0;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
 /* Hover Animations */
