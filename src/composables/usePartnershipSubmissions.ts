@@ -1,7 +1,6 @@
 import { ref, computed } from 'vue'
 import { collection, query, orderBy, getDocs, deleteDoc, doc, Timestamp } from 'firebase/firestore'
 import { db } from '../config/firebase'
-import { mockPartnershipSubmissions } from '../data/mockSubmissions'
 
 export interface PartnershipSubmission {
   id: string
@@ -28,15 +27,9 @@ export function usePartnershipSubmissions() {
     loading.value = true
     error.value = ''
 
-    const isDemo = localStorage.getItem('wesmile_demo_session') === 'true'
-
-    if (!db || isDemo) {
-      setTimeout(() => {
-        if (submissions.value.length === 0) {
-          submissions.value = [...mockPartnershipSubmissions]
-        }
-        loading.value = false
-      }, 300)
+    if (!db) {
+      error.value = 'Database is not initialized.'
+      loading.value = false
       return
     }
 
@@ -60,10 +53,9 @@ export function usePartnershipSubmissions() {
   }
 
   const deleteSubmission = async (id: string) => {
-    const isDemo = localStorage.getItem('wesmile_demo_session') === 'true'
-    if (!db || isDemo) {
-      submissions.value = submissions.value.filter(s => s.id !== id)
-      return true
+    if (!db) {
+      error.value = 'Database is not initialized.'
+      return false
     }
 
     try {

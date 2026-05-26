@@ -154,5 +154,11 @@ service cloud.firestore {
         request.resource.data.count >= 0 &&
         request.resource.data.count <= 100;
     }
+
+    // ── Users ──────────────────────────────────────────────────────────────────
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
   }
 }

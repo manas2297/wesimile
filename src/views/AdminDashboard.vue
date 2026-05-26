@@ -36,21 +36,6 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Demo Mode Banner -->
-      <div v-if="isDemoMode" class="bg-amber-50 border border-amber-200 rounded-md p-4 mb-6 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-800">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold text-amber-800">Running in Demo Mode</h3>
-            <p class="text-xs text-amber-700 font-medium">Viewing local simulated form submissions. Database alterations are only applied to current browser state.</p>
-          </div>
-        </div>
-        <span class="px-2.5 py-1 bg-amber-200 text-amber-850 rounded text-xs font-bold uppercase tracking-wider">Simulated</span>
-      </div>
       
       <!-- Tabs Selector -->
       <div class="border-b border-slate-200 mb-6 flex space-x-8">
@@ -578,10 +563,6 @@ import type { Timestamp } from 'firebase/firestore'
 
 const router = useRouter()
 const { user, logout } = useAuth()
-
-const isDemoMode = computed(() => {
-  return localStorage.getItem('wesmile_demo_session') === 'true'
-})
 
 const activeTab = ref<'contacts' | 'partnerships' | 'students'>('contacts')
 
