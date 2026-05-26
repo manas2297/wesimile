@@ -53,6 +53,10 @@ const router = createRouter({
 // Helper function to get current auth state
 const getCurrentUser = (): Promise<any> => {
   return new Promise((resolve, reject) => {
+    if (localStorage.getItem('wesmile_demo_session') === 'true') {
+      resolve({ email: 'admin@wesmile.com', uid: 'demo-admin' })
+      return
+    }
     if (!auth) {
       resolve(null)
       return

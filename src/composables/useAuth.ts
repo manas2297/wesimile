@@ -14,12 +14,21 @@ export function useAuth() {
 
   // Listen to auth state changes
   onMounted(() => {
+    if (localStorage.getItem('wesmile_demo_session') === 'true') {
+      user.value = { email: 'admin@wesmile.com', uid: 'demo-admin' } as any
+      loading.value = false
+      return
+    }
     if (!auth) {
       loading.value = false
       return
     }
     onAuthStateChanged(auth, (currentUser) => {
-      user.value = currentUser
+      if (localStorage.getItem('wesmile_demo_session') === 'true') {
+        user.value = { email: 'admin@wesmile.com', uid: 'demo-admin' } as any
+      } else {
+        user.value = currentUser
+      }
       loading.value = false
     })
   })
@@ -27,6 +36,14 @@ export function useAuth() {
   const login = async (email: string, password: string) => {
     error.value = ''
     loading.value = true
+
+    // Check for demo bypass credentials
+    if (email === 'admin@wesmile.com' && password === 'admin123') {
+      localStorage.setItem('wesmile_demo_session', 'true')
+      user.value = { email: 'admin@wesmile.com', uid: 'demo-admin' } as any
+      loading.value = false
+      return true
+    }
 
     if (!auth) {
       error.value = 'Authentication is not configured. Please check your .env file.'
@@ -36,6 +53,7 @@ export function useAuth() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      localStorage.removeItem('wesmile_demo_session') // Clear demo if logging in with Firebase
       user.value = userCredential.user
       return true
     } catch (err: any) {
@@ -68,8 +86,9 @@ export function useAuth() {
   }
 
   const logout = async () => {
+    localStorage.removeItem('wesmile_demo_session')
     if (!auth) {
-      error.value = 'Authentication is not configured.'
+      user.value = null
       return
     }
     try {
