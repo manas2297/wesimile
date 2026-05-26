@@ -72,6 +72,17 @@
         >
           Student Applications
         </button>
+        <button
+          @click="changeTab('chat')"
+          :class="[
+            activeTab === 'chat'
+              ? 'border-primary text-primary font-bold'
+              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 font-medium',
+            'pb-4 border-b-2 text-sm transition-all px-1 cursor-pointer'
+          ]"
+        >
+          💬 Live Support Chat
+        </button>
       </div>
 
       <!-- Stats Cards -->
@@ -400,6 +411,103 @@
           </table>
         </div>
       </div>
+
+      <!-- Tab 4: Live Support -->
+      <div v-else-if="activeTab === 'chat'" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col md:flex-row h-[550px]">
+        <!-- Sidebar: Active Sessions -->
+        <div class="w-full md:w-80 border-r border-slate-200 flex flex-col h-full bg-slate-50/50">
+          <div class="p-4 border-b border-slate-200 bg-white">
+            <h3 class="font-bold text-slate-800 text-sm">Active Visitors</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Real-time support chats</p>
+          </div>
+          
+          <div class="flex-grow overflow-y-auto p-2 space-y-1">
+            <div v-if="sessionsLoading" class="p-8 text-center text-sm text-slate-500">
+              Loading chat list...
+            </div>
+            <div v-else-if="sessions.length === 0" class="p-8 text-center text-sm text-slate-400">
+              No active conversations.
+            </div>
+            <button
+              v-for="session in sessions"
+              :key="session.visitorId"
+              @click="selectSession(session.visitorId)"
+              class="w-full text-left p-3 rounded-lg hover:bg-slate-100 transition-all cursor-pointer flex flex-col space-y-1"
+              :class="activeSessionId === session.visitorId ? 'bg-primary/5 border border-primary/20 shadow-sm' : 'border border-transparent'"
+            >
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-800 text-xs truncate max-w-[150px]">{{ session.visitorId }}</span>
+                <span class="text-[10px] text-slate-400 font-medium">{{ formatRelativeTime(session.updatedAt) }}</span>
+              </div>
+              <p class="text-xs text-slate-500 truncate font-medium">{{ session.lastMessage }}</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Conversation Area -->
+        <div class="flex-grow flex flex-col h-full bg-white relative">
+          <div v-if="!activeSessionId" class="flex-grow flex flex-col items-center justify-center p-8 text-slate-400 bg-slate-50/20">
+            <svg class="h-14 w-14 text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <p class="text-sm font-semibold">Select an active conversation to respond in real-time</p>
+          </div>
+
+          <template v-else>
+            <!-- Chat Header -->
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">Visitor: {{ activeSessionId }}</h4>
+                <p class="text-[10px] text-green-500 font-bold flex items-center space-x-1 mt-0.5">
+                  <span class="h-1.5 w-1.5 rounded-full bg-green-500 inline-block mr-1"></span>
+                  <span>Active Channel</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Messages Stream -->
+            <div ref="adminMessagesContainer" class="flex-grow overflow-y-auto p-6 space-y-4 bg-slate-50/30">
+              <div v-if="messagesLoading" class="text-center text-xs text-slate-400 py-8">
+                Syncing history...
+              </div>
+              <div 
+                v-for="msg in activeMessages" 
+                :key="msg.id"
+                class="flex flex-col"
+                :class="msg.sender === 'admin' ? 'items-end' : 'items-start'"
+              >
+                <div class="text-[10px] text-slate-400 font-semibold mb-0.5 px-2">
+                  {{ msg.sender === 'admin' ? 'You' : 'Visitor' }}
+                </div>
+                <div 
+                  class="max-w-[70%] rounded-2xl px-4 py-2.5 text-xs shadow-sm leading-relaxed"
+                  :class="msg.sender === 'admin' ? 'bg-primary text-white rounded-tr-none' : 'bg-white text-slate-800 border border-slate-200/60 rounded-tl-none'"
+                >
+                  {{ msg.text }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Reply Input Box -->
+            <div class="p-4 border-t border-slate-200">
+              <form @submit.prevent="sendReply" class="flex items-center space-x-2">
+                <input 
+                  v-model="replyText"
+                  type="text"
+                  placeholder="Type an admin reply..."
+                  class="flex-grow px-4 py-3 text-xs border border-slate-200 rounded-full focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent text-slate-800 bg-slate-50/50"
+                >
+                <button 
+                  type="submit"
+                  class="bg-primary text-white px-5 py-3 rounded-full hover:bg-primary-dark transition-colors cursor-pointer text-xs font-bold shrink-0"
+                >
+                  Send Reply
+                </button>
+              </form>
+            </div>
+          </template>
+        </div>
+      </div>
     </main>
 
     <!-- Detail Modal -->
@@ -553,23 +661,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 import { useContactSubmissions } from '../composables/useContactSubmissions'
 import { usePartnershipSubmissions } from '../composables/usePartnershipSubmissions'
 import { useStudentApplications } from '../composables/useStudentApplications'
+import { useAdminChat } from '../composables/useAdminChat'
 import type { Timestamp } from 'firebase/firestore'
 
 const router = useRouter()
 const { user, logout } = useAuth()
 
-const activeTab = ref<'contacts' | 'partnerships' | 'students'>('contacts')
+const activeTab = ref<'contacts' | 'partnerships' | 'students' | 'chat'>('contacts')
 
 // Load the three separate stores
 const contactStore = useContactSubmissions()
 const partnershipStore = usePartnershipSubmissions()
 const studentStore = useStudentApplications()
+
+// Load live admin chat
+const {
+  sessions,
+  activeSessionId,
+  activeMessages,
+  sessionsLoading,
+  messagesLoading,
+  startSessionsListener,
+  selectSession,
+  sendAdminMessage
+} = useAdminChat()
+
+const replyText = ref('')
+const adminMessagesContainer = ref<HTMLElement | null>(null)
+
+const scrollAdminChat = async () => {
+  await nextTick()
+  if (adminMessagesContainer.value) {
+    adminMessagesContainer.value.scrollTo({
+      top: adminMessagesContainer.value.scrollHeight,
+      behavior: 'smooth'
+    })
+  }
+}
+
+watch(activeMessages, () => {
+  scrollAdminChat()
+}, { deep: true })
+
+const sendReply = async () => {
+  if (!replyText.value.trim()) return
+  await sendAdminMessage(replyText.value.trim())
+  replyText.value = ''
+}
 
 // Computed getter pointing to the currently active store
 const activeStore = computed(() => {
@@ -597,9 +741,13 @@ const activeSortBy = computed({
 })
 
 // Tab switching
-const changeTab = (tab: 'contacts' | 'partnerships' | 'students') => {
+const changeTab = (tab: 'contacts' | 'partnerships' | 'students' | 'chat') => {
   activeTab.value = tab
-  activeStore.value.fetchSubmissions()
+  if (tab === 'chat') {
+    startSessionsListener()
+  } else {
+    activeStore.value.fetchSubmissions()
+  }
 }
 
 onMounted(() => {
