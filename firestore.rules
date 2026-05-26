@@ -64,8 +64,8 @@ service cloud.firestore {
         hasValidTimestamp() &&
         hasValidMetadata();
 
-      // Only authenticated admin users can read and delete
-      allow read, delete: if request.auth != null;
+      // Only admin users can read and delete submissions
+      allow read, delete: if isAdmin();
     }
 
     // ── B2B Partnerships ───────────────────────────────────────────────────────
@@ -102,8 +102,8 @@ service cloud.firestore {
         hasValidTimestamp() &&
         hasValidMetadata();
 
-      // Only authenticated admin users can read and delete
-      allow read, delete: if request.auth != null;
+      // Only admin users can read and delete B2B submissions
+      allow read, delete: if isAdmin();
     }
 
     // ── Student Applications ───────────────────────────────────────────────────
@@ -135,6 +135,8 @@ service cloud.firestore {
         request.resource.data.specialtyInterest.size() <= 50 &&
         request.resource.data.resumeUrl.size() >= 5 &&
         request.resource.data.resumeUrl.size() <= 250 &&
+        // Must be a valid https URL
+        request.resource.data.resumeUrl.matches('^https://.*') &&
         request.resource.data.message.size() >= 10 &&
         request.resource.data.message.size() <= 1000 &&
 
@@ -146,19 +148,14 @@ service cloud.firestore {
         hasValidTimestamp() &&
         hasValidMetadata();
 
-      // Only authenticated admin users can read and delete
-      allow read, delete: if request.auth != null;
+      // Only admin users can read and delete student applications
+      allow read, delete: if isAdmin();
     }
 
     // ── Rate Limits ────────────────────────────────────────────────────────────
-    // Only allow the server-side rate limit reads; deny arbitrary writes from clients.
     match /rateLimits/{document=**} {
-      allow read: if true;
-      allow write: if
-        request.resource.data.keys().hasOnly(['count', 'lastAttempt', 'windowStart']) &&
-        request.resource.data.count is int &&
-        request.resource.data.count >= 0 &&
-        request.resource.data.count <= 100;
+      allow read: if isAdmin();
+      allow write: if false;
     }
 
     // ── Users ──────────────────────────────────────────────────────────────────
@@ -169,10 +166,35 @@ service cloud.firestore {
 
     // ── Real-Time Chat ──────────────────────────────────────────────────────────
     match /chats/{visitorId} {
-      allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == visitorId);
+      // Admin can read/write any chat; visitors can only read/update their own session
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == visitorId);
+      allow create: if request.auth != null && request.auth.uid == visitorId &&
+        request.resource.data.keys().hasOnly(['visitorId', 'lastMessage', 'updatedAt']) &&
+        request.resource.data.visitorId is string &&
+        request.resource.data.lastMessage is string &&
+        request.resource.data.lastMessage.size() <= 500 &&
+        request.resource.data.updatedAt == request.time;
+      allow update: if isAdmin() || (
+        request.auth != null && request.auth.uid == visitorId &&
+        request.resource.data.keys().hasOnly(['visitorId', 'lastMessage', 'updatedAt']) &&
+        request.resource.data.lastMessage is string &&
+        request.resource.data.lastMessage.size() <= 500 &&
+        request.resource.data.updatedAt == request.time
+      );
+      allow delete: if isAdmin();
 
       match /messages/{messageId} {
-        allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == visitorId);
+        allow read: if isAdmin() || (request.auth != null && request.auth.uid == visitorId);
+        // Visitors can only create messages, not update or delete
+        allow create: if (request.auth != null && request.auth.uid == visitorId &&
+          request.resource.data.keys().hasOnly(['text', 'sender', 'timestamp']) &&
+          request.resource.data.text is string &&
+          request.resource.data.text.size() >= 1 &&
+          request.resource.data.text.size() <= 500 &&
+          request.resource.data.sender == 'visitor' &&
+          request.resource.data.timestamp == request.time
+        ) || isAdmin();
+        allow update, delete: if isAdmin();
       }
     }
   }
