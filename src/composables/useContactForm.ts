@@ -163,6 +163,7 @@ export function useContactForm() {
         ipAddress: await fetch('https://api.ipify.org?format=json')
           .then(res => res.json())
           .then(data => data.ip)
+          .catch(() => 'N/A')
       })
 
       // Reset form

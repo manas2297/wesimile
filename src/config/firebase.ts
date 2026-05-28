@@ -1,6 +1,7 @@
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { getAuth, Auth } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaV3Provider, AppCheck } from 'firebase/app-check';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,6 +14,7 @@ const firebaseConfig = {
 
 let db: Firestore | null = null;
 let auth: Auth | null = null;
+let appCheck: AppCheck | null = null;
 
 // Only initialize Firebase if API key is present and doesn't look like a placeholder
 const hasValidApiKey = firebaseConfig.apiKey && 
@@ -21,9 +23,23 @@ const hasValidApiKey = firebaseConfig.apiKey &&
 
 if (hasValidApiKey) {
   try {
-    const app = initializeApp(firebaseConfig);
+    const app: FirebaseApp = initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
+
+    // Initialize App Check with reCAPTCHA v3
+    const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY;
+    if (recaptchaSiteKey && recaptchaSiteKey !== 'PASTE_YOUR_SITE_KEY_HERE') {
+      // Enable debug token for local development
+      if (import.meta.env.DEV) {
+        (self as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+      }
+
+      appCheck = initializeAppCheck(app, {
+        provider: new ReCaptchaV3Provider(recaptchaSiteKey),
+        isTokenAutoRefreshEnabled: true
+      });
+    }
   } catch (error) {
     console.error('Failed to initialize Firebase:', error);
   }
@@ -34,4 +50,4 @@ if (hasValidApiKey) {
   );
 }
 
-export { db, auth };
+export { db, auth, appCheck };

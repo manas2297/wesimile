@@ -1,7 +1,10 @@
 import { ref, onUnmounted } from 'vue'
 import {
   collection,
+  doc,
   addDoc,
+  updateDoc,
+  deleteDoc,
   query,
   orderBy,
   onSnapshot,
@@ -15,6 +18,7 @@ export interface ChatSession {
   visitorId: string
   lastMessage: string
   updatedAt: Timestamp
+  status?: 'active' | 'completed' | 'deleted'
 }
 
 export function useAdminChat() {
@@ -37,6 +41,7 @@ export function useAdminChat() {
 
     sessionsUnsubscribe = onSnapshot(q, (snapshot) => {
       sessions.value = snapshot.docs.map((doc) => ({
+        visitorId: doc.id,
         ...doc.data()
       })) as ChatSession[]
       sessionsLoading.value = false
@@ -90,6 +95,51 @@ export function useAdminChat() {
     }
   }
 
+  // 4. Archive a chat session
+  const archiveSession = async (visitorId: string) => {
+    if (!db || !visitorId) return
+    const chatDocRef = doc(db, 'chats', visitorId)
+    try {
+      await updateDoc(chatDocRef, {
+        status: 'completed',
+        updatedAt: serverTimestamp()
+      })
+      if (activeSessionId.value === visitorId) {
+        activeSessionId.value = ''
+      }
+    } catch (error) {
+      console.error('Failed to archive chat session:', error)
+    }
+  }
+
+  // 5. Restore an archived session to active
+  const restoreSession = async (visitorId: string) => {
+    if (!db || !visitorId) return
+    const chatDocRef = doc(db, 'chats', visitorId)
+    try {
+      await updateDoc(chatDocRef, {
+        status: 'active',
+        updatedAt: serverTimestamp()
+      })
+    } catch (error) {
+      console.error('Failed to restore chat session:', error)
+    }
+  }
+
+  // 6. Delete a chat session (and all messages)
+  const deleteSession = async (visitorId: string) => {
+    if (!db || !visitorId) return
+    const chatDocRef = doc(db, 'chats', visitorId)
+    try {
+      await deleteDoc(chatDocRef)
+      if (activeSessionId.value === visitorId) {
+        activeSessionId.value = ''
+      }
+    } catch (error) {
+      console.error('Failed to delete chat session:', error)
+    }
+  }
+
   onUnmounted(() => {
     if (sessionsUnsubscribe) sessionsUnsubscribe()
     if (messagesUnsubscribe) messagesUnsubscribe()
@@ -103,6 +153,9 @@ export function useAdminChat() {
     messagesLoading,
     startSessionsListener,
     selectSession,
-    sendAdminMessage
+    sendAdminMessage,
+    archiveSession,
+    restoreSession,
+    deleteSession
   }
 }
