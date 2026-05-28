@@ -169,17 +169,23 @@ service cloud.firestore {
       // Admin can read/write any chat; visitors can only read/update their own session
       allow read: if isAdmin() || (request.auth != null && request.auth.uid == visitorId);
       allow create: if request.auth != null && request.auth.uid == visitorId &&
-        request.resource.data.keys().hasOnly(['visitorId', 'lastMessage', 'updatedAt']) &&
+        request.resource.data.keys().hasOnly(['visitorId', 'lastMessage', 'updatedAt', 'status']) &&
         request.resource.data.visitorId is string &&
         request.resource.data.lastMessage is string &&
         request.resource.data.lastMessage.size() <= 500 &&
-        request.resource.data.updatedAt == request.time;
+        request.resource.data.updatedAt == request.time &&
+        (!('status' in request.resource.data) || request.resource.data.status in ['active', 'completed', 'deleted']);
       allow update: if isAdmin() || (
         request.auth != null && request.auth.uid == visitorId &&
-        request.resource.data.keys().hasOnly(['visitorId', 'lastMessage', 'updatedAt']) &&
+        request.resource.data.keys().hasOnly(['visitorId', 'lastMessage', 'updatedAt', 'status']) &&
         request.resource.data.lastMessage is string &&
         request.resource.data.lastMessage.size() <= 500 &&
-        request.resource.data.updatedAt == request.time
+        request.resource.data.updatedAt == request.time &&
+        // Ensure visitor cannot modify the status value set by admin
+        (
+          (!('status' in resource.data) && !('status' in request.resource.data)) ||
+          (resource.data.status == request.resource.data.status)
+        )
       );
       allow delete: if isAdmin();
 
