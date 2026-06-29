@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, onMounted, computed } from 'vue'
 import { useChatSession } from '../composables/useChatSession'
+import { sanitizeHtml } from '../utils/sanitize'
+
+const MAX_MESSAGE_LENGTH = 500
+const MIN_SEND_INTERVAL_MS = 2000 // 1 message per 2 seconds
 
 const isOpen = ref(false)
 const message = ref('')
 const messagesContainer = ref<HTMLElement | null>(null)
+const lastSentAt = ref(0)
 
 const {
   visitorId,
@@ -52,6 +57,16 @@ onMounted(() => {
   }
 })
 
+// Client-side rate limit check
+const isRateLimited = (): boolean => {
+  const now = Date.now()
+  if (now - lastSentAt.value < MIN_SEND_INTERVAL_MS) {
+    return true
+  }
+  lastSentAt.value = now
+  return false
+}
+
 const quickActions = [
   { label: '📅 Book Appointment', action: 'book' },
   { label: '🕒 Clinic Hours', action: 'hours' },
@@ -61,6 +76,8 @@ const quickActions = [
 ]
 
 const handleQuickAction = async (action: string) => {
+  if (isRateLimited()) return
+
   let userText = ''
   let botReply = ''
 
@@ -87,8 +104,8 @@ const handleQuickAction = async (action: string) => {
       break
   }
 
-  // 1. Write the visitor question to Firestore
-  await sendVisitorMessage(userText)
+  // 1. Write the sanitised visitor question to Firestore
+  await sendVisitorMessage(sanitizeHtml(userText).slice(0, MAX_MESSAGE_LENGTH))
   
   // 2. Write the bot's auto reply to Firestore (with sender: 'admin' so admin sees it)
   setTimeout(async () => {
@@ -106,11 +123,13 @@ const handleQuickAction = async (action: string) => {
 
 const sendMessage = async () => {
   if (!message.value.trim()) return
+  if (isRateLimited()) return
 
-  const userQuery = message.value.trim()
+  // Sanitise and enforce length limit
+  const userQuery = sanitizeHtml(message.value.trim()).slice(0, MAX_MESSAGE_LENGTH)
   message.value = ''
 
-  // Send message to Firestore
+  // Send sanitised message to Firestore
   await sendVisitorMessage(userQuery)
 
   // Smart bot auto-response logic (runs if no admin is active yet)
@@ -247,6 +266,7 @@ const sendMessage = async () => {
               v-model="message"
               type="text"
               placeholder="Ask a question..."
+              maxlength="500"
               class="flex-grow px-4 py-2 text-sm border border-slate-200 rounded-full focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent text-slate-800 bg-slate-50/50"
             >
             <button 

@@ -82,6 +82,17 @@ export function useStudentForm() {
     return /^[6-9]\d{9}$/.test(cleanPhone)
   }
 
+  const validateUrl = (url: string): boolean => {
+    if (!url || url.length > 250) return false
+    // Must start with https://
+    try {
+      const parsed = new URL(url)
+      return parsed.protocol === 'https:'
+    } catch {
+      return false
+    }
+  }
+
   const handleSubmit = async () => {
     isSubmitting.value = true
     submitError.value = ''
@@ -115,6 +126,12 @@ export function useStudentForm() {
 
       if (await isRateLimited(email.value.trim())) {
         submitError.value = 'Too many attempts. Please try again later.'
+        isSubmitting.value = false
+        return
+      }
+
+      if (!validateUrl(resumeUrl.value.trim())) {
+        submitError.value = 'Please enter a valid HTTPS URL for your resume or LinkedIn profile'
         isSubmitting.value = false
         return
       }

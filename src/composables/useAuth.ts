@@ -68,7 +68,7 @@ export function useAuth() {
           error.value = 'Invalid email address'
           break
         case 'auth/user-disabled':
-          error.value = 'This account has been disabled'
+          error.value = 'Invalid email or password'
           break
         case 'auth/user-not-found':
           error.value = 'Invalid email or password'
